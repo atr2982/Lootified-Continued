@@ -16,6 +16,7 @@ UI.HelpBox = Help
 
 Help.LINKS = {
     { label = "Project on GitHub", url = "https://github.com/atr2982/Lootified-Continued" },
+    { label = "Data from ForeverDB.net", url = "https://foreverdb.net" },
 }
 
 local WIDTH, PAD, LINE, BUTTON = 400, 16, 28, 30

@@ -30,3 +30,12 @@ The current addon ships generated static data from its earlier pipeline. The ove
 Run `node build_collected.js SAVED_VARIABLES OUTPUT_LUA` using the completed account SavedVariables file. This generates `Data/CollectedOverrides.lua` with the answered items, weapons, item names, and quest facts. Keep its TOC entry after the base data files and before `Data/RefreshOverrides.lua`. The client refused thousands of quest IDs; those remain in the curated base rather than being invented. Dungeon drops, map geometry, prerequisites, and BiS weights need separate verified data because this collection does not provide them.
 
 After a refresh, the live addon reports the verified data build through `LJ.DATA_BUILD`, `LJ.DATA_CHECKED`, and `LJ.DATA_STATUS`. The tool does not treat a search result or arbitrary web scrape as truth: imported records must be reviewed, carry a Forever build, and should include provenance URLs. Client collection remains the authoritative source for build-specific tooltip and quest facts; public databases are reviewed cross-checks and cover server-side content the client cannot expose.
+
+## ForeverDB snapshot
+
+`fetch_foreverdb.js` reads `FOREVERDB_API_KEY` from the local environment and writes a packaged `Data/ForeverDB.lua` snapshot. The key is never written to the repository or addon. ForeverDB data is credited in the addon and supplies current item metadata, quest records, and dungeon catalog data; the client collection remains the source for tooltip stats.
+
+```powershell
+$env:FOREVERDB_API_KEY = "your-local-key"
+node refresh-tool/fetch_foreverdb.js LootifiedContinued/Data/ForeverDB.lua
+```
