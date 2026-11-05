@@ -299,10 +299,6 @@ local function FillDetail(page, rec)
             onClick = function() MapPin.OpenZone(zone.map) end }
     end
     local icons = {}
-    if inst and LJ.DungeonMap.Get(inst) then
-        icons[#icons + 1] = { glyph = "map", tooltip = "Dungeon map", tooltipText = "Opens the dungeon's map with its bosses.",
-            onClick = function() LJ.DungeonMap.ShowWindow(inst) end }
-    end
     icons[#icons + 1] = { glyph = "scroll", tooltip = "Quests", tooltipText = "Its quests on the Quests page.",
         onClick = function() DB.Go("quests", nil, rec.name) end }
     icons[#icons + 1] = { glyph = "skull", tooltip = "Mobs", tooltipText = "Its bosses and mobs on the Mobs page.",

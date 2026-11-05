@@ -421,16 +421,6 @@ function Page:CreateDungeon(root)
     head.title:SetPoint("TOPLEFT", 20, -31)
     head.meta = Widgets.Text(head, "bodySmall", C.text3)
     head.meta:SetPoint("TOPLEFT", head.title, "BOTTOMLEFT", 0, -6)
-    -- the dungeon map: a big red button, the entrance beside it
-    self.mapButton = Widgets.CreateButton(head, nil, "primary", "map", nil, 34)
-    self.mapButton.text:SetFontObject(Theme.Font("h2"))
-    self.mapButton.iconSize, self.mapButton.padding = 16, 16
-    self.mapButton.icon:SetSize(16, 16)
-    self.mapButton:SetLabel("Dungeon map")
-    self.mapButton:SetPoint("RIGHT", -16, 0)
-    self.mapButton.key = "map"
-    Widgets.SetTooltip(self.mapButton, "Dungeon map", "Blizzard's map of the dungeon with every boss and its loot, in its own window.", "ANCHOR_BOTTOM")
-    self.mapButton:SetScript("OnClick", function() LJ.DungeonMap.ShowWindow(self.inst) end)
     self.entranceButton = Widgets.CreateButton(head, "Entrance", "ghost", "mapPin", nil, 30)
     Widgets.SetTooltip(self.entranceButton, "Dungeon entrance", "Shows the entrance on the world map.", "ANCHOR_BOTTOM")
     self.entranceButton:SetScript("OnClick", function()
@@ -628,9 +618,6 @@ function Page:OpenInstance(key, tab, group, quest)
     LJ.db.journal.last[inst.kind] = key
     LJ.db.journal.lastKey = key
     Theme.SetAccent(Theme.InstanceAccent(inst))
-    -- the dungeon map window follows the picked dungeon (and closes for one without a map)
-    local shown = LJ.DungeonMap.WindowInstance()
-    if shown and shown ~= inst and not LJ.DungeonMap.ShowWindow(inst) then LJ.DungeonMap.HideWindow() end
     if changed then
         self.group = nil
         self.quest, self.questRow = nil, nil
@@ -666,15 +653,9 @@ function Page:RefreshHead()
     if inst.kind ~= "raid" then parts[#parts + 1] = F("%d players", inst.size or 5) end
     head.meta:SetText(table.concat(parts, "   |   "))
     self.backButton:SetLabel(inst.kind == "raid" and "All raids" or "All dungeons")
-    local hasMap = LJ.DungeonMap.Get(inst) ~= nil
-    self.mapButton:SetShown(hasMap)
     self.entranceButton:SetShown(inst.entrance ~= nil)
     self.entranceButton:ClearAllPoints()
-    if hasMap then
-        self.entranceButton:SetPoint("RIGHT", self.mapButton, "LEFT", -8, 0)
-    else
-        self.entranceButton:SetPoint("RIGHT", -16, 0)
-    end
+    self.entranceButton:SetPoint("RIGHT", -16, 0)
 end
 
 -- key: "loot" (the bosses and the picked one's loot) or "quests"
@@ -909,10 +890,7 @@ end
 -- mode: "home" (kind) | "instance" (key, bossIndex or "map": the dungeon with its map window) | "quest" (questID)
 function Page:Show(mode, a, b)
     if mode == "instance" then
-        if b == "map" then
-            self:OpenInstance(a)
-            LJ.DungeonMap.ShowWindow(self.inst)
-        elseif b ~= nil then
+        if b ~= nil then
             self:OpenInstance(a, "loot", b)
         else
             self:OpenInstance(a)
@@ -956,11 +934,6 @@ function Page:TourShow(what, key)
     UI:Open("instance", key)
     self.left:ScrollToTop()
     self.right:ScrollToTop()
-end
-
--- The frame the tour's map step points at: the Dungeon map button.
-function Page:TourTarget()
-    if self.mapButton:IsShown() then return self.mapButton end
 end
 
 -- Map buttons show "Marked" for the spot on the map: redraw the quest when the mark changes.

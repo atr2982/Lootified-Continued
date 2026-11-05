@@ -30,26 +30,23 @@ local ACTION_GAP = 10    -- between a step's action button and the buttons below
 ---------------------------------------------------------------------------
 -- What the steps show
 ---------------------------------------------------------------------------
--- The dungeon of the journal steps: of those around the character's level (as "My level" in the list), one with a
--- dungeon map (the map step shows its button), and of those the one with the most upgrades; else the first dungeon
--- with known bosses (with a map, if one has).
+-- The dungeon of the journal steps: of those around the character's level (as "My level" in the list), the one with
+-- the most upgrades; else the first dungeon with known bosses.
 local function PickInstance()
     local level = Player.level or 1
-    local best, bestCount, bestMap, first, firstMap
+    local best, bestCount, first
     for _, inst in ipairs(LJ.instancesByKind.dungeon or {}) do
         if #inst.bosses > 0 then
-            local hasMap = LJ.DungeonMap.Get(inst) ~= nil
             first = first or inst
-            if hasMap then firstMap = firstMap or inst end
             if inst.minLevel <= level + 3 and inst.maxLevel >= level - 2 then
                 local count = LJ.Lists.CountFor(inst)
-                if not best or (hasMap and not bestMap) or (hasMap == bestMap and count > bestCount) then
-                    best, bestCount, bestMap = inst, count, hasMap
+                if not best or count > bestCount then
+                    best, bestCount = inst, count
                 end
             end
         end
     end
-    return best or firstMap or first or (LJ.instancesByKind.dungeon or {})[1]
+    return best or first or (LJ.instancesByKind.dungeon or {})[1]
 end
 
 local function Journal() return UI.pages.journal end
@@ -185,7 +182,7 @@ local PANE_JOURNAL = {
     title = "Journal",
     -- Alt+Click checks the loot
     text = function()
-        local text = L("Every dungeon and raid as a picture: the best one for you on top, the others below (\"My level only\" shows the ones for your level). A dungeon shows its bosses on the left and the picked boss's loot on the right. Quests are next to Bosses, the dungeon map is at the top right.")
+    local text = L("Every dungeon and raid as a picture: the best one for you on top, the others below (\"My level only\" shows the ones for your level). A dungeon shows its bosses on the left and the picked boss's loot on the right. Quests are next to Bosses.")
         local alt = AltClick()
         if alt == "sim" then
             text = text .. " " .. L("Alt+Click an item in the loot to sim it against what you wear.")
@@ -197,13 +194,6 @@ local PANE_JOURNAL = {
     enter = PaneShow("journal"),
     target = Content, place = "inside", pad = 0,
 }
-local PANE_MAP = {
-    title = "Dungeon map",
-    text = "Opens Blizzard's map of the dungeon in its own window: the bosses are numbered, and a click on one shows its loot. Drag the grip at the bottom right to make the map bigger. Dungeon entrances also have a pin on the world map.",
-    enter = PaneShow("map"), target = function() return Journal():TourTarget() end,
-}
-
-
 -- The database look: its Items page shows the parts every page has (search, filters, table, details), then the tabs and
 -- the options.
 local function ItemsPage() return UI.pages.items end
@@ -305,7 +295,6 @@ local function BuildSteps()
         Add(On("foryou") and WELCOME or WELCOME_PLAIN)
         if On("journal") then
             Add(PANE_JOURNAL)
-            Add(PANE_MAP)
         end
         if On("world") then Add(WORLD) end
         if On("bis") then
@@ -632,8 +621,7 @@ function Tour:Start()
     self:EnsureOverlay()
     self.steps = BuildSteps()
     self.inst = not Theme.IsDatabase() and LJ.Modules.On("journal") and PickInstance() or nil
-    -- the dungeon map, the simulator and the filter's panel explain themselves again the next time they open
-    LJ.db.mapTour = nil
+    -- the simulator and the filter's panel explain themselves again the next time they open
     LJ.db.simTour = nil
     LJ.db.filterTour = nil
     UI:Open("start")

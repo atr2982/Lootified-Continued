@@ -14,7 +14,7 @@ Modules.LIST = {
     { key = "foryou", name = "For you", glyph = "sparkle",
       text = "Your start page: the best dungeon for your level and your next upgrades." },
     { key = "journal", name = "Journal", glyph = "book",
-      text = "Every dungeon and raid: bosses, loot, quests and the dungeon map." },
+      text = "Every dungeon and raid: bosses, loot and quests." },
     { key = "world", name = "Open World", glyph = "globe",
       text = "The rares and mobs of every zone with their drops and camps." },
     { key = "bis", name = "Best in Slot", glyph = "crown",
