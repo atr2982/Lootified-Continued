@@ -1,6 +1,6 @@
 -- Lootified - the journal of the classic and the modern look. The start page shows every dungeon as a picture card: the
 -- best one for the character big on top, the others for the level below it, then the ones coming up (or all of them). A
--- dungeon has a header with its picture, its name, a link back to all dungeons and the Entrance and Dungeon map
+-- dungeon has a header with its picture, its name, a link back to all dungeons and its entrance
 -- buttons; below it a Bosses | Quests switch over the bosses on the left (round portraits with their level, the picked
 -- one highlighted) and the picked boss's loot on the right, the boss itself beside it as an animated 3D model.
 local _, LJ = ...
@@ -887,7 +887,7 @@ end
 ---------------------------------------------------------------------------
 -- Page interface
 ---------------------------------------------------------------------------
--- mode: "home" (kind) | "instance" (key, bossIndex or "map": the dungeon with its map window) | "quest" (questID)
+-- mode: "home" (kind) | "instance" (key, bossIndex) | "quest" (questID)
 function Page:Show(mode, a, b)
     if mode == "instance" then
         if b ~= nil then
@@ -925,7 +925,7 @@ end
 -- The tour (UI/Tour.lua)
 ---------------------------------------------------------------------------
 -- Shows what a step of the tour explains. what: "journal" (the start page), "loot" (the boss with the best upgrade
--- for the character), "map" (the dungeon with its Dungeon map button); key: the tour's dungeon.
+-- for the character); key: the tour's dungeon.
 function Page:TourShow(what, key)
     if what == "journal" then
         UI:Open("home", "dungeon")

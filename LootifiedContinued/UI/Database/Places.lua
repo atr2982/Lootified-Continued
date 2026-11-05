@@ -2,7 +2,7 @@
 -- level; "Near my level" keeps the places around the character's level. The picked place:
 -- its picture (a dungeon) or the globe (a zone), its facts, its bosses or its rares and mobs (a click opens them on the
 -- Mobs page), the best upgrades for the character there, and buttons for the map (a dungeon's entrance, a zone's map),
--- the dungeon map and its quests and mobs on the other pages.
+-- its quests and mobs on the other pages.
 local _, LJ = ...
 local L, F = LJ.L, LJ.F
 

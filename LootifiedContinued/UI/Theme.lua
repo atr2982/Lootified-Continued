@@ -559,7 +559,7 @@ function Theme.SetSkin(skin)
     for key, value in pairs(MODERN_TEX) do Theme.TEX[key] = value end
     -- glows only in the glass looks
     if skin == "classic" then Theme.TEX.glow, Theme.TEX.glowLine = nil, nil end
-    -- every accent listener belongs to a window of the old look (the main window, the dungeon map window and their
+    -- every accent listener belongs to a window of the old look (the main window and its
     -- tours), which a look switch builds again: none of their parts takes the new look's colors
     wipe(accentListeners)
     Theme.RefreshAccent(true)

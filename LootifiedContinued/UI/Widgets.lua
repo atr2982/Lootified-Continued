@@ -461,7 +461,7 @@ function Widgets.Line(parent, layer, alpha)
     return Widgets.Solid(parent, layer or "BORDER", 0, C.white, alpha or 0.06)
 end
 
--- Background of a panel over the window (menus, flyouts, notes, the tour's box, the dungeon map): dark glass in the
+    -- Background of a panel over the window (menus, flyouts, notes and the tour's box): dark glass in the
 -- glass looks, dark brown in a bronze line in the classic look. Its SetBorder tints the outline. modern = { fill =
 -- {r, g, b, a}, border = {r, g, b, a} }: this panel's own glass (default: the popup glass).
 local POPUP_GLASS = { fill = { 0.086, 0.102, 0.133, 0.98 }, border = { 1, 1, 1, 0.09 } }

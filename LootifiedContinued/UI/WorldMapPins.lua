@@ -1,5 +1,5 @@
 -- Lootified - dungeon entrances on the world map: a pin at every entrance the addon knows (inst.entrance). A click
--- opens the dungeon in Lootified with its dungeon map; dungeons that share an entrance (Scarlet
+-- opens the dungeon in Lootified; dungeons that share an entrance (Scarlet
 -- Monastery, Blackrock Spire) share a pin that offers a choice. The pins come from a data provider of the game's
 -- world map (MapCanvasDataProviderMixin): drawn when the map shows a zone with entrances, gone when it closes.
 -- The addon's own "Map" buttons for an entrance open the map with its pin lit (Core/MapPin.lua) instead of a second
@@ -80,7 +80,7 @@ local function OpenDungeon(inst)
     if WorldMapFrame:IsShown() and not InCombatLockdown() then
         HideUIPanel(WorldMapFrame)
     end
-    UI:Open("instance", inst.key, "map")
+    UI:Open("instance", inst.key)
 end
 
 local function PinOnEnter(pin)

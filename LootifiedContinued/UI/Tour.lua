@@ -4,7 +4,7 @@
 -- Best in Slot sim, which goes on while the tour does (the progress window shows it).
 -- It starts once by itself, the first time the player opens the window outside combat and instances
 -- (LootifiedData.tourDone), and again from the options or with /lf tour. Tour.New makes a tour of another window with the
--- same spotlight and text box (the dungeon map, the simulator and the filter's panel explain themselves).
+-- same spotlight and text box (the filter's panel explains itself).
 local _, LJ = ...
 local L, F = LJ.L, LJ.F
 

@@ -75,7 +75,6 @@ if input and input.web then
     end
     mergeMap(LJ.Data.Quests, web.quests)
     mergeMap(LJ.Data.WorldDrops, web.world_drops)
-    mergeMap(LJ.Data.DungeonMaps, web.dungeon_maps)
     if type(web.instances) == "table" and #web.instances > 0 then LJ.Data.Instances = web.instances end
     if type(web.bis_weights) == "table" and next(web.bis_weights) then LJ.Data.BiS = web.bis_weights end
     LJ.DATA_BUILD = web.build
