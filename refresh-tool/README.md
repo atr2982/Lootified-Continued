@@ -43,3 +43,15 @@ node refresh-tool/fetch_web_bis.js LootifiedContinued/Data/WebBiS.lua
 ```
 
 The BiS refresh reads the current Forever-specific gear pages from [WoW Forever Forge](https://wowforeverforge.com/bis/), preserves the addon’s existing alternatives, and prepends current guide picks when they are not already present. Dungeon detail refreshes add current ForeverDB status, ranges, bosses and notable loot without replacing detailed boss tables that still need item-by-item confirmation.
+
+## Static dungeon loot tables
+
+Dungeon loot does not require personally running every dungeon. The refresh
+workflow uses the published Forever Atlas tables as the primary static loot
+cross-check, then compares them with ForeverDB, the client collection, and
+other Forever-specific references. The current addon tables already include
+the verified Forever Atlas boss drops; entries that Forever Atlas marks as
+unknown or source-pending are not guessed into a boss table.
+
+Forever Atlas is GPL-2.0. Keep the attribution and license notice in
+`THIRD_PARTY_NOTICES.md` if its data or code is redistributed.
