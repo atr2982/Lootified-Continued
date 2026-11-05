@@ -4,14 +4,14 @@ A community maintained continuation of Lootified for World of Warcraft: Forever.
 
 Maintained by atr2982. Based on the original Lootified addon by Alen, under GPL-3.0. This repository preserves the original license and notices and marks the continuation as modified. It is independent of the original author's website and Discord support channel.
 
-This repository contains the code and data for the private personal fork. The artist-made dungeon map assets are kept only in the local installed addon and are excluded from this GitHub repository. If they are ever distributed, permission and attribution terms should be reviewed first.
+This is a public continuation project for personal use and collaboration. The artist-made dungeon map assets are kept only in the local installed addon and are excluded from this GitHub repository. If they are ever distributed, permission and attribution terms should be reviewed first.
 
 ## Data status
 
-The local installation was refreshed against Forever client build 1.60.1.70790 using `/lf collect`. The personal collection is excluded from this public repository. Dungeon drops, maps, quest prerequisites, and BiS lists still contain curated data from earlier builds and are being checked against current Forever sources. A source's Classic data must be distinguished from observations in Forever.
+The local installation and repository data are refreshed against Forever client build 1.60.1.70790 using `/lf collect`. The packaged snapshot combines client-collected facts with the latest available reviewed ForeverDB data, Forever Atlas 1.0.53 dungeon tables, and current Forever-specific BiS guides. Personal account collection data is excluded from this public repository. Any content that Forever sources explicitly mark as sealed, pending, or unverified remains labeled that way rather than being guessed. A source's Classic data must still be distinguished from observations in Forever.
 
 ## Refresh workflow
 
-The `refresh-tool/` directory contains the client collection converter and a reviewed data importer. Run the collection in game, exit or reload so SavedVariables are written, then generate the collected Lua layer locally. Public repository copies do not include account data or generated collection files.
+The `refresh-tool/` directory contains the client collection converter and reviewed data refresh tools. After a major Forever patch, run `/lf collect` in game, reload or exit so SavedVariables are written, refresh ForeverDB, compare the latest Forever Atlas dungeon tables, refresh the current BiS guides, review the changes, and then install and publish the verified snapshot. Public repository copies do not include account data or generated collection files.
 
 Issues and source contributions can be tracked through this repository once published. ForeverDB sourced records will be visibly credited if its API is used.
