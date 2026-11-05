@@ -463,7 +463,7 @@ function LJ:HandleSlash(msg)
     elseif cmd == "bis" then
         self:Open("bis")
     elseif cmd == "sim" then
-        self:Print("The combat simulator is disabled in Lootified Continued. Percent scoring is enabled.")
+        self:Print("Percent scoring is enabled in Lootified Continued.")
     elseif cmd == "export" then
         self:Print("Character export is disabled in Lootified Continued.")
     elseif cmd == "wishlist" or cmd == "wish" or cmd == "wl" then
