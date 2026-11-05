@@ -32,7 +32,7 @@ async function list(kind) {
   return out;
 }
 
-function luaKey(k) { return /^\d+$/.test(String(k)) ? `[${k}]` : JSON.stringify(String(k)); }
+function luaKey(k) { return /^\d+$/.test(String(k)) ? `[${k}]` : /^[A-Za-z_][A-Za-z0-9_]*$/.test(String(k)) ? String(k) : `[${JSON.stringify(String(k))}]`; }
 function lua(v, depth = 0) {
   if (v == null) return "nil";
   if (typeof v === "string") return JSON.stringify(v);
