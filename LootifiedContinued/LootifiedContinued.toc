@@ -19,6 +19,7 @@ Core\Modules.lua
 Data\Items.lua
 Data\Instances.lua
 Data\BiS.lua
+Data\WebBiS.lua
 Data\Quests.lua
 Data\ItemStats.lua
 Data\ItemClasses.lua
