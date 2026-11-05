@@ -74,6 +74,22 @@ if input and input.web then
         LJ.Data.ItemStats.build = web.build
     end
     mergeMap(LJ.Data.Quests, web.quests)
+    local function Unique(list, excluded)
+        local out, seen = {}, excluded or {}
+        for _, itemID in ipairs(list or {}) do
+            if itemID and not seen[itemID] then seen[itemID] = true; out[#out + 1] = itemID end
+        end
+        return out
+    end
+    for _, q in pairs(LJ.Data.Quests or {}) do
+        q.choice = Unique(q.choice)
+        q.reward = Unique(q.reward, (function()
+            local choice = {}
+            for _, itemID in ipairs(q.choice or {}) do choice[itemID] = true end
+            return choice
+        end)())
+        if #q.reward == 0 then q.reward = nil end
+    end
     mergeMap(LJ.Data.WorldDrops, web.world_drops)
     if type(web.instances) == "table" and #web.instances > 0 then LJ.Data.Instances = web.instances end
     if type(web.bis_weights) == "table" and next(web.bis_weights) then LJ.Data.BiS = web.bis_weights end

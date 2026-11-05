@@ -62090,6 +62090,20 @@ for id, name in pairs(c.names) do
         if tail then data.Items[id] = name .. tail end
     end
 end
+local function Unique(list)
+    local out, seen = {}, {}
+    for _, itemID in ipairs(list or {}) do
+        if itemID and not seen[itemID] then seen[itemID] = true; out[#out + 1] = itemID end
+    end
+    return out
+end
+local function Without(list, excluded)
+    local out = {}
+    for _, itemID in ipairs(list or {}) do
+        if not excluded[itemID] then out[#out + 1] = itemID end
+    end
+    return out
+end
 for id, fresh in pairs(c.quests) do
     local q = data.Quests[id]
     if q then
@@ -62098,8 +62112,13 @@ for id, fresh in pairs(c.quests) do
         if fresh.xp then q.xp = fresh.xp end
         if fresh.money then q.money = fresh.money end
         if fresh.obj then q.obj = fresh.obj end
-        if fresh.choice then q.choice = fresh.choice end
-        if fresh.reward then q.reward = fresh.reward end
+        if fresh.choice then q.choice = Unique(fresh.choice) end
+        if fresh.reward then
+            local choice = {}
+            for _, itemID in ipairs(q.choice or {}) do choice[itemID] = true end
+            q.reward = Without(Unique(fresh.reward), choice)
+            if #q.reward == 0 then q.reward = nil end
+        end
     end
 end
 LJ.COLLECT_BUILD = c.build

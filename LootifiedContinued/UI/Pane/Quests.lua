@@ -538,12 +538,15 @@ local function RewardEntries(q)
     local choice, items = q.choice or {}, q.reward or {}
     if #choice == 0 and #items == 0 and not (q.rep and #q.rep > 0) then return entries end
     entries[1] = { kind = "section", data = { text = L(#choice > 1 and "Rewards · choose one" or "Rewards") }, h = SECTION_HEIGHT }
-    local function Add(id, also)
+    local seen = {}
+    local function Add(id)
+        if seen[id] then return end
+        seen[id] = true
         entries[#entries + 1] = { kind = "item", h = Kit.M().item, data = { id = id, upgrade = LJ.BiS.Upgrade(id),
-            tag = also and "ALSO" or nil, col = 1, cols = 1 } }
+            col = 1, cols = 1 } }
     end
-    for _, id in ipairs(choice) do Add(id, false) end
-    for _, id in ipairs(items) do Add(id, #choice > 0) end
+    for _, id in ipairs(choice) do Add(id) end
+    for _, id in ipairs(items) do Add(id) end
     local reps = {}
     for _, rep in ipairs(q.rep or {}) do
         reps[#reps + 1] = Theme.ColorText(string.format("%s %s%d", rep[1], rep[2] > 0 and "+" or "", rep[2]),

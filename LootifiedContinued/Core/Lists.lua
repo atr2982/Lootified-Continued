@@ -79,25 +79,11 @@ function Lists.BuildGroups(inst)
         end
         groups[#groups + 1] = g
     end
-    local seen, rewards = {}, {}
-    for _, q in ipairs(Quests.ForInstance(inst.key, "MINE")) do
-        for _, list in ipairs({ q.choice or {}, q.reward or {} }) do
-            for _, id in ipairs(list) do
-                if not seen[id] then
-                    seen[id] = true
-                    rewards[#rewards + 1] = { id = id, questID = q.id, questName = q.name, isChoice = list == q.choice }
-                end
-            end
-        end
-    end
-    if #rewards > 0 then
-        groups[#groups + 1] = { id = inst.key .. ":quests", kind = "quests", index = -1, entries = rewards }
-    end
     return groups
 end
 
--- The upgrades of an instance for the character (the items of its Best in Slot list), counted like its loot without
--- filters: every item once, quest rewards too.
+-- The upgrades of an instance for the character (the items of its Best in Slot list), counted like its boss and trash
+-- loot without filters. Quest rewards are shown only on the Quests tab.
 function Lists.CountFor(inst)
     local seen, upgrades = {}, 0
     for _, g in ipairs(Lists.BuildGroups(inst)) do
