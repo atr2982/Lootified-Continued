@@ -39,4 +39,7 @@ After a refresh, the live addon reports the verified data build through `LJ.DATA
 $env:FOREVERDB_API_KEY = "your-local-key"
 node refresh-tool/fetch_foreverdb.js LootifiedContinued/Data/ForeverDB.lua
 node refresh-tool/fetch_dungeon_details.js LootifiedContinued/Data/ForeverDBDungeons.lua
+node refresh-tool/fetch_web_bis.js LootifiedContinued/Data/WebBiS.lua
 ```
+
+The BiS refresh reads the current Forever-specific gear pages from [WoW Forever Forge](https://wowforeverforge.com/bis/), preserves the addon’s existing alternatives, and prepends current guide picks when they are not already present. Dungeon detail refreshes add current ForeverDB status, ranges, bosses and notable loot without replacing detailed boss tables that still need item-by-item confirmation.
