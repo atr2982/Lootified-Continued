@@ -1,4 +1,6 @@
-# Lootified
+# Lootified Continued
+
+This continuation keeps the journal, dungeon loot, dungeon quests, quest and world map pins, open world sources, and Best in Slot features. The optional dungeon map window and its map assets have been removed; the original map files remain in the personal maintenance backup.
 
 **Loot journal & Best in Slot for WoW: Forever**: every boss and rare, every drop with its drop chance, every dungeon quest, a Best-in-Slot list the simulator builds for your level from every item you can wear, in three looks: Modern, Classic (dark leather with gold titles, every dungeon as a picture) or Database (look up every item, mob, quest and place with search and filters).
 

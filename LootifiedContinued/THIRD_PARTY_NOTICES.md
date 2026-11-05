@@ -53,30 +53,8 @@ the ones on their Wowhead Forever pages. Quest giver positions are the CMaNGOS s
 
 ## Dungeon maps
 
-The dungeon maps are Blizzard's own map art, drawn from the World of Warcraft client at run time
-(`Interface\WorldMap`). They are Blizzard Entertainment's property and are not included in the addon, except the map
-of Wailing Caverns (see below). The floors
-of each map and their edges in world coordinates come from the client tables DungeonMap, DungeonMapChunk and
-WorldMapArea of World of Warcraft 4.3.4 (build 15595); which floor a boss or entrance is on was found in the
-collision models (vmaps) of the same build. Both are taken from the public server data pack
-https://github.com/skypeak/Maps-VMaps-DBC. The spots of the bosses and entrances are CMaNGOS classic-db creature
-spawns and instance entrances (see above).
-
-### The map of Wailing Caverns
-
-The game client's map of Wailing Caverns is the Cataclysm one, which leaves out the eastern maze that Cataclysm removed
-and Forever still has. Lootified shows Blizzard's earlier map of the dungeon instead (Wrath of the Lich King,
-`Media/Maps/WailingCaverns`, converted by `pipeline/gen_fan_maps.py`). It is Blizzard Entertainment's artwork and is
-not covered by this addon's GPL-3.0 license.
-
-### Maps of the new Forever dungeons
-
-The maps of Hall of Thanes, Ruins of Lordaeron, City of Dalaran (the Underbelly and the city) and Excavation Site:
-Wetlands (`Media/Maps`) are by **Santiago Reyes**, from his project *Atlas de Azeroth: Forever*
-(https://asguevara433.wixsite.com/srmaps), and are included with his permission. They are his artwork: they are
-**not** covered by this addon's GPL-3.0 license and may not be reused outside Lootified without his permission. The
-addon shows the credit under each of these maps. Converted to WoW textures (4 x 3 tiles of 128, DXT1) by
-`pipeline/gen_fan_maps.py`; the boss and entrance spots on them were placed by hand from the dungeon guides.
+The dungeon map window and its map assets are not included in this continuation. Quest markers, dungeon entrance pins,
+open world camp pins, and the game's normal world map remain available.
 
 ## Classic look
 
