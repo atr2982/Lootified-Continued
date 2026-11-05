@@ -98,4 +98,5 @@ UI\Minimap.lua
 UI\WorldMapPins.lua
 Data\CollectedOverrides.lua
 Data\ForeverDB.lua
+Data\ForeverDBDungeons.lua
 Data\RefreshOverrides.lua

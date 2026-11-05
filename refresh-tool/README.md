@@ -38,4 +38,5 @@ After a refresh, the live addon reports the verified data build through `LJ.DATA
 ```powershell
 $env:FOREVERDB_API_KEY = "your-local-key"
 node refresh-tool/fetch_foreverdb.js LootifiedContinued/Data/ForeverDB.lua
+node refresh-tool/fetch_dungeon_details.js LootifiedContinued/Data/ForeverDBDungeons.lua
 ```
