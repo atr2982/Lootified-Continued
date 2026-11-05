@@ -1,0 +1,11 @@
+# Personal WoW data and locally generated client collection
+**/WTF/
+**/SavedVariables/
+**/Backups/
+LootifiedContinued/Data/CollectedOverrides.lua
+LootifiedContinued/Media/Maps/
+refresh-tool/verified-forever-70790.json
+**/*.log
+**/.env
+**/*secret*
+**/*token*

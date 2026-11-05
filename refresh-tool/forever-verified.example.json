@@ -1,0 +1,20 @@
+{
+  "build": "1.60.1.70755",
+  "checked": "2026-11-04",
+  "sources": [
+    "Forever client",
+    "ForeverChanges",
+    "Wowhead Forever",
+    "60.tools",
+    "CMaNGOS classic-db",
+    "Icy Veins",
+    "Warcraft Tavern"
+  ],
+  "items": {},
+  "item_stats": {},
+  "quests": {},
+  "instances": [],
+  "world_drops": {},
+  "dungeon_maps": {},
+  "bis_weights": {}
+}
