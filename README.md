@@ -1,6 +1,6 @@
 # Lootified Continued
 
-A community maintained continuation of Lootified for World of Warcraft: Forever. It brings dungeon bosses and loot, dungeon quests and their chains, maps, open world drops, and level aware gear recommendations into one addon. This continuation uses English text and percent based stat weights; the simulator is disabled.
+A community maintained continuation of Lootified for World of Warcraft: Forever. It brings dungeon bosses and loot, dungeon quests and their chains, maps, open world drops, and level aware gear recommendations into one addon. This continuation uses English text and percent based stat weights.
 
 Maintained by atr2982. Based on the original Lootified addon by Alen, under GPL-3.0. This repository preserves the original license and notices and marks the continuation as modified. It is independent of the original author's website and Discord support channel.
 
