@@ -561,14 +561,15 @@ LJ.Data.WebBiS = {
         picks = {}
     }
 }
+local function FDBSpec(s) return string.lower(s or ""):gsub("[^a-z0-9]", "") end
 for key, web in pairs(LJ.Data.WebBiS) do
     local classKey, specKey = key:match("^([^:]+):(.+)$")
     local class = string.upper(classKey or "")
-    local specName = string.lower(specKey or "")
+    local specName = FDBSpec(specKey)
     local list = LJ.Data.BiS[class]
     if list then
         for _, spec in ipairs(list) do
-            if string.lower(spec.key or "") == specName or string.lower(spec.name or "") == specName then
+            if FDBSpec(spec.key) == specName or FDBSpec(spec.name) == specName then
                 spec.webBiS = web
                 for slot, id in pairs(web.picks or {}) do
                     if spec.slots and spec.slots[slot] then
