@@ -105,6 +105,7 @@ local completedCache = {}
 local logCache = {}
 local objectivesCache = {}
 local liveQuestCache
+local liveQuestNameCache
 -- an instance's counts (Quests.CountForInstance), made from the states above: [instKey] = { total, open, done }
 local countCache = {}
 
@@ -122,31 +123,49 @@ Quests.IsCompleted = IsFlaggedCompleted
 local function LiveQuestIDs()
     if liveQuestCache then return liveQuestCache end
     local ids = {}
+    local names = {}
+    local function AddName(title, level)
+        if type(title) ~= "string" or title == "" then return end
+        local key = title:lower() .. "|" .. tostring(tonumber(level) or 0)
+        names[key] = true
+        names[title:lower()] = true
+    end
     if GetNumQuestLogEntries then
         for index = 1, GetNumQuestLogEntries() do
             local questID
+            local title, level, isHeader
             if C_QuestLog.GetQuestIDForLogIndex then
                 questID = C_QuestLog.GetQuestIDForLogIndex(index)
             end
             if not questID and C_QuestLog.GetInfo then
                 local info = C_QuestLog.GetInfo(index)
                 questID = info and (info.questID or info.questId)
+                if info then title, level, isHeader = info.title, info.level, info.isHeader end
             end
-            if not questID and GetQuestLogTitle then
-                local _, _, _, isHeader, _, _, _, classicQuestID = GetQuestLogTitle(index)
+            if GetQuestLogTitle then
+                local classicTitle, classicLevel, _, classicHeader, _, _, _, classicQuestID = GetQuestLogTitle(index)
+                title, level, isHeader = classicTitle or title, classicLevel or level, classicHeader
                 if not isHeader then questID = classicQuestID end
             end
+            if not isHeader then AddName(title, level) end
             if questID and questID > 0 then ids[questID] = true end
         end
     end
     liveQuestCache = ids
+    liveQuestNameCache = names
     return ids
 end
 
 local function ReadLogState(qid)
     local live = LiveQuestIDs()
     if next(live) then
-        if not live[qid] then return false end
+        if not live[qid] then
+            local q = Quests.Get(qid)
+            local names = liveQuestNameCache or {}
+            local title = q and q.name and q.name:lower()
+            local byLevel = title and (title .. "|" .. tostring(tonumber(q.level) or 0))
+            if not (title and (names[byLevel] or names[title])) then return false end
+        end
     elseif not C_QuestLog.IsOnQuest(qid) then
         return false
     end
@@ -200,6 +219,7 @@ function Quests.InvalidateCache()
     wipe(objectivesCache)
     wipe(countCache)
     liveQuestCache = nil
+    liveQuestNameCache = nil
 end
 
 ---------------------------------------------------------------------------
