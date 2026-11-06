@@ -104,6 +104,7 @@ end
 local completedCache = {}
 local logCache = {}
 local objectivesCache = {}
+local liveQuestCache
 -- an instance's counts (Quests.CountForInstance), made from the states above: [instKey] = { total, open, done }
 local countCache = {}
 
@@ -118,8 +119,26 @@ end
 Quests.IsCompleted = IsFlaggedCompleted
 
 -- The game's state of a quest in the log: "READY", "ACTIVE" or false (not in the log).
+local function LiveQuestIDs()
+    if liveQuestCache then return liveQuestCache end
+    local ids = {}
+    if C_QuestLog.GetInfo and GetNumQuestLogEntries then
+        for index = 1, GetNumQuestLogEntries() do
+            local info = C_QuestLog.GetInfo(index)
+            if info and not info.isHeader and info.questID then ids[info.questID] = true end
+        end
+    end
+    liveQuestCache = ids
+    return ids
+end
+
 local function ReadLogState(qid)
-    if not C_QuestLog.IsOnQuest(qid) then return false end
+    local live = LiveQuestIDs()
+    if next(live) then
+        if not live[qid] then return false end
+    elseif not C_QuestLog.IsOnQuest(qid) then
+        return false
+    end
     return (C_QuestLog.ReadyForTurnIn(qid) or C_QuestLog.IsComplete(qid)) and Quests.READY or Quests.ACTIVE
 end
 
@@ -169,6 +188,7 @@ function Quests.InvalidateCache()
     wipe(logCache)
     wipe(objectivesCache)
     wipe(countCache)
+    liveQuestCache = nil
 end
 
 ---------------------------------------------------------------------------
