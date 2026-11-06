@@ -431,8 +431,40 @@ function Quests.ForInstance(instKey, filter, chainsOnce)
     local before = {}
     for _, q in ipairs(list) do Earlier(q, before, 0) end
     local shown = {}
+    local active = {}
+    -- The final reward quest is normally the best single representative of a
+    -- chain.  While the player is on an earlier step, however, that final
+    -- record is misleading: Forever can have a live dungeon quest whose
+    -- classic follow-up is also present in the database.  Remember live
+    -- steps so the list can prefer what is actually in the quest log.
     for _, q in ipairs(list) do
-        if not before[q.id] then shown[#shown + 1] = q end
+        local status = Quests.GetStatus(q)
+        if status == Quests.ACTIVE or status == Quests.READY then
+            active[q.id] = true
+        end
+    end
+    for _, q in ipairs(list) do
+        if not before[q.id] then
+            local replaceWithLiveStep = false
+            for p in pairs(Earlier(q, {}, 0)) do
+                if active[p] then
+                    replaceWithLiveStep = true
+                    break
+                end
+            end
+            if not replaceWithLiveStep then shown[#shown + 1] = q end
+        end
+    end
+    -- Earlier live steps are not necessarily terminal records in the
+    -- instance table. Add them after removing their chain's terminal row.
+    for _, q in ipairs(list) do
+        if active[q.id] then
+            local present = false
+            for _, existing in ipairs(shown) do
+                if existing.id == q.id then present = true break end
+            end
+            if not present then shown[#shown + 1] = q end
+        end
     end
     return shown
 end
