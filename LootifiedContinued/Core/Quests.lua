@@ -122,10 +122,21 @@ Quests.IsCompleted = IsFlaggedCompleted
 local function LiveQuestIDs()
     if liveQuestCache then return liveQuestCache end
     local ids = {}
-    if C_QuestLog.GetInfo and GetNumQuestLogEntries then
+    if GetNumQuestLogEntries then
         for index = 1, GetNumQuestLogEntries() do
-            local info = C_QuestLog.GetInfo(index)
-            if info and not info.isHeader and info.questID then ids[info.questID] = true end
+            local questID
+            if C_QuestLog.GetQuestIDForLogIndex then
+                questID = C_QuestLog.GetQuestIDForLogIndex(index)
+            end
+            if not questID and C_QuestLog.GetInfo then
+                local info = C_QuestLog.GetInfo(index)
+                questID = info and (info.questID or info.questId)
+            end
+            if not questID and GetQuestLogTitle then
+                local _, _, _, isHeader, _, _, _, classicQuestID = GetQuestLogTitle(index)
+                if not isHeader then questID = classicQuestID end
+            end
+            if questID and questID > 0 then ids[questID] = true end
         end
     end
     liveQuestCache = ids
