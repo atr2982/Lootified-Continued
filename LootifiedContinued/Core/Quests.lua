@@ -130,8 +130,16 @@ local function LiveQuestIDs()
         names[key] = true
         names[title:lower()] = true
     end
+    local count
     if GetNumQuestLogEntries then
-        for index = 1, GetNumQuestLogEntries() do
+        count = GetNumQuestLogEntries()
+    elseif C_QuestLog.GetNumQuestLogEntries then
+        count = C_QuestLog.GetNumQuestLogEntries()
+    elseif C_QuestLog.GetQuestLogCount then
+        count = C_QuestLog.GetQuestLogCount()
+    end
+    if count then
+        for index = 1, count do
             local questID
             local title, level, isHeader
             if C_QuestLog.GetQuestIDForLogIndex then
