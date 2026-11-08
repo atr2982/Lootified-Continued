@@ -198,6 +198,10 @@ local function ReadLogState(qid)
     elseif not C_QuestLog.IsOnQuest(qid) then
         return false
     end
+    -- Forever currently reports Searching for the Lost Satchel as ready as
+    -- soon as it enters the log, even though its RFC corpse objective is not
+    -- complete. Trust the server's completed flag for this quest instead.
+    if qid == 5722 then return Quests.ACTIVE end
     local completionItem = (q and q.completeWithItem) or completionItems[qid]
     if completionItem and GetItemCount
         and GetItemCount(completionItem, true) < 1 then
