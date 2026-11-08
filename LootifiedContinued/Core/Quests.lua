@@ -106,6 +106,10 @@ local logCache = {}
 local objectivesCache = {}
 local liveQuestCache
 local liveQuestNameCache
+-- Forever's live quest API can mark this corpse-search quest ready before the
+-- follow-up satchel item exists. Keep this guard here so generated data merges
+-- cannot remove it.
+local completionItems = { [5722] = 14381 }
 -- an instance's counts (Quests.CountForInstance), made from the states above: [instKey] = { total, open, done }
 local countCache = {}
 
@@ -194,8 +198,9 @@ local function ReadLogState(qid)
     elseif not C_QuestLog.IsOnQuest(qid) then
         return false
     end
-    if q and q.completeWithItem and GetItemCount
-        and GetItemCount(q.completeWithItem, true) < 1 then
+    local completionItem = (q and q.completeWithItem) or completionItems[qid]
+    if completionItem and GetItemCount
+        and GetItemCount(completionItem, true) < 1 then
         return Quests.ACTIVE
     end
     local ready = C_QuestLog.ReadyForTurnIn(qid) or C_QuestLog.IsComplete(qid)
