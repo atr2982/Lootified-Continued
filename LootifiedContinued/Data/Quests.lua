@@ -1119,6 +1119,7 @@ LJ.Data.Quests = {
         min = 9,
         side = "H",
         obj = "Search Maur Grimtotem's corpse in Ragefire Chasm for anything worth taking back.",
+        completeWithItem = 14381,
         next = { 5724 },
         src = "forever",
         start = S[2],

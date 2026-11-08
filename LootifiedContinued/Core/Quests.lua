@@ -164,11 +164,28 @@ local function LiveQuestIDs()
     return ids
 end
 
+-- Forever can report a quest as complete before an instance objective has
+-- actually been finished. Never show READY while the live objective list says
+-- that one of the quest's objectives is still open.
+local function ObjectivesAreFinished(qid)
+    if not C_QuestLog.GetQuestObjectives then return true end
+    local objectives = C_QuestLog.GetQuestObjectives(qid)
+    if type(objectives) ~= "table" or #objectives == 0 then return true end
+    for _, objective in ipairs(objectives) do
+        if objective.finished == false then return false end
+        if objective.numRequired and objective.numFulfilled
+            and objective.numFulfilled < objective.numRequired then
+            return false
+        end
+    end
+    return true
+end
+
 local function ReadLogState(qid)
     local live = LiveQuestIDs()
+    local q = Quests.Get(qid)
     if next(live) then
         if not live[qid] then
-            local q = Quests.Get(qid)
             local names = liveQuestNameCache or {}
             local title = q and q.name and q.name:lower()
             local byLevel = title and (title .. "|" .. tostring(tonumber(q.level) or 0))
@@ -177,7 +194,12 @@ local function ReadLogState(qid)
     elseif not C_QuestLog.IsOnQuest(qid) then
         return false
     end
-    return (C_QuestLog.ReadyForTurnIn(qid) or C_QuestLog.IsComplete(qid)) and Quests.READY or Quests.ACTIVE
+    if q and q.completeWithItem and GetItemCount
+        and GetItemCount(q.completeWithItem, true) < 1 then
+        return Quests.ACTIVE
+    end
+    local ready = C_QuestLog.ReadyForTurnIn(qid) or C_QuestLog.IsComplete(qid)
+    return ready and ObjectivesAreFinished(qid) and Quests.READY or Quests.ACTIVE
 end
 
 -- Returns "READY", "ACTIVE" or nil.
