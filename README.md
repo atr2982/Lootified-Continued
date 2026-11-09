@@ -10,8 +10,3 @@ This is a public continuation project for personal use and collaboration.
 
 The local installation and repository data are refreshed against Forever client build 1.60.1.70790 using `/lf collect`. The packaged snapshot combines client-collected facts with the latest available reviewed ForeverDB data, Forever Atlas 1.0.53 dungeon tables, and current Forever-specific BiS guides. Personal account collection data is excluded from this public repository. Any content that Forever sources explicitly mark as sealed, pending, or unverified remains labeled that way rather than being guessed. A source's Classic data must still be distinguished from observations in Forever.
 
-## Refresh workflow
-
-The `refresh-tool/` directory contains the client collection converter and reviewed data refresh tools. After a major Forever patch, run `/lf collect` in game, reload or exit so SavedVariables are written, refresh ForeverDB, compare the latest Forever Atlas dungeon tables, refresh the current BiS guides, review the changes, and then install and publish the verified snapshot. Public repository copies do not include account data or generated collection files.
-
-Issues and source contributions can be tracked through this repository once published. ForeverDB sourced records will be visibly credited if its API is used.
