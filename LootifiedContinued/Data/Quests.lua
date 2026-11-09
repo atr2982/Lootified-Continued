@@ -8377,6 +8377,10 @@ LJ.Data.Quests = {
         min = 15,
         side = "H",
         obj = "Kill Rath'mael in the Ruins of Lordaeron for Deathguard Kristof in Brill.",
+        -- Live Forever requires both Rear Guard Patrol steps before this
+        -- dungeon quest becomes available. The second step is the newer
+        -- level-13 live quest record collected as 99156.
+        pre = { 356, 99156 },
         src = "new",
         start = S[529],
         finish = S[529],
