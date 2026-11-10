@@ -590,6 +590,12 @@ local function EquippedScore(slotID, spec, slotKey, current)
     if not itemID then return 0, nil end
     local link = Player:GetEquippedLink(slotID)
     local stats = link and Scoring.GetStatsForLink(link)
+    -- Forever can provide an equipped link before its live stat table is available.  The
+    -- collected/shipped item record is still authoritative in that case; without this
+    -- fallback every worn slot looks unknown and the shared BiS upgrade list is empty.
+    if not stats or next(stats) == nil then
+        stats = Scoring.GetStats(itemID)
+    end
     if not stats then
         Items.Request(itemID)
         return nil, itemID, link

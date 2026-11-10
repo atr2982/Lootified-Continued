@@ -25,17 +25,10 @@ LJ.Data.ForeverDBDungeons = {
         },
         notableLoot = {
             {
-                itemId = 273036,
-                name = "Graveweave Bindings",
+                itemId = 273457,
+                name = "Sorcerer Collar",
                 why = {
-                    "top pick for Affliction Warlock and 14 more specs at level 30"
-                }
-            },
-            {
-                itemId = 273030,
-                name = "Ring of Power Regulation",
-                why = {
-                    "top pick for Arcane Mage and 9 more specs at level 30"
+                    "top pick for Arcane Mage and 10 more specs at level 20"
                 }
             },
             {
@@ -43,6 +36,13 @@ LJ.Data.ForeverDBDungeons = {
                 name = "Worgenbane Talisman",
                 why = {
                     "top pick for Arcane Mage and 9 more specs at level 30/40/50"
+                }
+            },
+            {
+                itemId = 6392,
+                name = "Belt of Arugal",
+                why = {
+                    "top pick for Affliction Warlock and 7 more specs at level 30"
                 }
             }
         },
@@ -129,10 +129,11 @@ LJ.Data.ForeverDBDungeons = {
                 }
             },
             {
-                itemId = 5193,
-                name = "Cape of the Brotherhood",
+                itemId = 284715,
+                name = "First Mate Band",
                 why = {
-                    "top pick for Assassination Rogue and 7 more specs at level 20"
+                    "Partners in Crime set",
+                    "top pick for Arms Warrior and 7 more specs at level 20"
                 }
             }
         },
@@ -176,8 +177,8 @@ LJ.Data.ForeverDBDungeons = {
                 }
             },
             {
-                itemId = 6449,
-                name = "Glowing Lizardscale Cloak",
+                itemId = 5404,
+                name = "Serpent's Shoulders",
                 why = {
                     "top pick for Arms Warrior and 9 more specs at level 20"
                 }
@@ -251,25 +252,24 @@ LJ.Data.ForeverDBDungeons = {
         },
         notableLoot = {
             {
-                itemId = 286989,
-                name = "Violet Sorcerer's Wraps",
+                itemId = 888,
+                name = "Naga Battle Gloves",
                 why = {
-                    "Violet Sorcerer's Vestments set",
-                    "top pick for Affliction Warlock and 18 more specs at level 30/40"
+                    "top pick for Holy Paladin and 2 more specs at level 30"
                 }
             },
             {
-                itemId = 286994,
-                name = "Tattered Kirin Tor Cloak",
+                itemId = 6901,
+                name = "Glowing Thresher Cape",
                 why = {
-                    "top pick for Affliction Warlock and 14 more specs at level 30/40/50"
+                    "top pick for Discipline Priest and 2 more specs at level 30"
                 }
             },
             {
-                itemId = 286995,
-                name = "Guardian's Emblem",
+                itemId = 6911,
+                name = "Moss Cinch",
                 why = {
-                    "top pick for Affliction Warlock and 14 more specs at level 30"
+                    "top pick for Balance Druid and 1 more spec at level 30"
                 }
             }
         },
@@ -301,21 +301,21 @@ LJ.Data.ForeverDBDungeons = {
                 itemId = 9398,
                 name = "Worn Running Boots",
                 why = {
-                    "top pick for Assassination Rogue and 5 more specs at level 40"
+                    "top pick for Beast Mastery Hunter and 2 more specs at level 40"
+                }
+            },
+            {
+                itemId = 9407,
+                name = "Stoneweaver Leggings",
+                why = {
+                    "top pick for Discipline Priest and 2 more specs at level 40"
                 }
             },
             {
                 itemId = 9415,
                 name = "Grimlok's Tribal Vestments",
                 why = {
-                    "top pick for Holy Paladin and 1 more spec at level 50"
-                }
-            },
-            {
-                itemId = 9416,
-                name = "Grimlok's Charge",
-                why = {
-                    "top pick for Feral Combat Druid and 1 more spec at level 50"
+                    "top pick for Discipline Priest and 1 more spec at level 50"
                 }
             }
         },
@@ -355,10 +355,10 @@ LJ.Data.ForeverDBDungeons = {
                 }
             },
             {
-                itemId = 9454,
-                name = "Acidic Walkers",
+                itemId = 5214,
+                name = "Wand of Eventide",
                 why = {
-                    "top pick for Arcane Mage and 3 more specs at level 30"
+                    "top pick for Affliction Warlock and 6 more specs at level 30"
                 }
             }
         },
@@ -385,7 +385,29 @@ LJ.Data.ForeverDBDungeons = {
             "Dreamscythe",
             "Jammal'an the Prophet"
         },
-        notableLoot = {},
+        notableLoot = {
+            {
+                itemId = 10838,
+                name = "Might of Hakkar",
+                why = {
+                    "top pick for Protection Paladin and 1 more spec at level 50"
+                }
+            },
+            {
+                itemId = 10842,
+                name = "Windscale Sarong",
+                why = {
+                    "top pick for Balance Druid and 1 more spec at level 50"
+                }
+            },
+            {
+                itemId = 10845,
+                name = "Warrior's Embrace",
+                why = {
+                    "top pick for Protection Paladin and 1 more spec at level 50"
+                }
+            }
+        },
         url = "https://foreverdb.net/dungeon/109-sunken-temple"
     },
     [129] = {
@@ -412,7 +434,7 @@ LJ.Data.ForeverDBDungeons = {
                 itemId = 10769,
                 name = "Glowing Eye of Mordresh",
                 why = {
-                    "top pick for Affliction Warlock and 13 more specs at level 40/50"
+                    "top pick for Arcane Mage and 11 more specs at level 40/50"
                 }
             },
             {
@@ -438,7 +460,7 @@ LJ.Data.ForeverDBDungeons = {
         players = 40,
         level = nil,
         range = nil,
-        status = "classic",
+        status = "other",
         newInForever = false,
         bosses = {},
         notableLoot = {},
@@ -473,17 +495,17 @@ LJ.Data.ForeverDBDungeons = {
                 }
             },
             {
-                itemId = 7722,
-                name = "Triune Amulet",
+                itemId = 7691,
+                name = "Embalmed Shroud",
                 why = {
-                    "top pick for Affliction Warlock and 11 more specs at level 40/50"
+                    "top pick for Arcane Mage and 6 more specs at level 30"
                 }
             },
             {
-                itemId = 7719,
-                name = "Raging Berserker's Helm",
+                itemId = 7685,
+                name = "Orb of the Forgotten Seer",
                 why = {
-                    "top pick for Arms Warrior and 5 more specs at level 40/50"
+                    "top pick for Balance Druid and 5 more specs at level 40/50"
                 }
             }
         },
@@ -510,7 +532,29 @@ LJ.Data.ForeverDBDungeons = {
             "Shadowpriest Sezz'ziz",
             "Chief Ukorz Sandscalp"
         },
-        notableLoot = {},
+        notableLoot = {
+            {
+                itemId = 274641,
+                name = "Theka's Last Breath",
+                why = {
+                    "top pick for Arcane Mage and 8 more specs at level 50"
+                }
+            },
+            {
+                itemId = 12471,
+                name = "Desertwalker Cane",
+                why = {
+                    "top pick for Discipline Priest and 4 more specs at level 50"
+                }
+            },
+            {
+                itemId = 9474,
+                name = "Jinxed Hoodoo Kilt",
+                why = {
+                    "top pick for Holy Paladin and 2 more specs at level 50"
+                }
+            }
+        },
         url = "https://foreverdb.net/dungeon/209-zulfarrak"
     },
     [229] = {
@@ -542,24 +586,24 @@ LJ.Data.ForeverDBDungeons = {
         },
         notableLoot = {
             {
-                itemId = 16666,
-                name = "Vest of Elements",
+                itemId = 13213,
+                name = "Smolderweb's Eye",
                 why = {
-                    "The Elements set"
+                    "top pick for Affliction Warlock and 18 more specs at level 60"
                 }
             },
             {
-                itemId = 16670,
-                name = "Boots of Elements",
+                itemId = 13183,
+                name = "Venomspitter",
                 why = {
-                    "The Elements set"
+                    "Spider's Kiss set"
                 }
             },
             {
-                itemId = 16672,
-                name = "Gauntlets of Elements",
+                itemId = 13211,
+                name = "Slashclaw Bracers",
                 why = {
-                    "The Elements set"
+                    "top pick for Beast Mastery Hunter and 1 more spec at level 60"
                 }
             }
         },
@@ -599,7 +643,29 @@ LJ.Data.ForeverDBDungeons = {
             "Princess Moira Bronzebeard",
             "Emperor Dagran Thaurissan"
         },
-        notableLoot = {},
+        notableLoot = {
+            {
+                itemId = 11626,
+                name = "Blackveil Cape",
+                why = {
+                    "top pick for Arms Warrior and 9 more specs at level 50"
+                }
+            },
+            {
+                itemId = 11623,
+                name = "Spritecaster Cape",
+                why = {
+                    "top pick for Affliction Warlock and 8 more specs at level 50"
+                }
+            },
+            {
+                itemId = 11624,
+                name = "Kentic Amice",
+                why = {
+                    "top pick for Affliction Warlock and 8 more specs at level 50"
+                }
+            }
+        },
         url = "https://foreverdb.net/dungeon/230-blackrock-depths"
     },
     [249] = {
@@ -618,24 +684,24 @@ LJ.Data.ForeverDBDungeons = {
         },
         notableLoot = {
             {
+                itemId = 11302,
+                name = "Uther's Strength",
+                why = {
+                    "top pick for Discipline Priest and 5 more specs at level 50/60"
+                }
+            },
+            {
+                itemId = 13120,
+                name = "Deepfury Bracers",
+                why = {
+                    "top pick for Beast Mastery Hunter and 2 more specs at level 50"
+                }
+            },
+            {
                 itemId = 13139,
                 name = "Guttbuster",
                 why = {
-                    "top pick for Arms Warrior and 4 more specs at level 50"
-                }
-            },
-            {
-                itemId = 13007,
-                name = "Mageflame Cloak",
-                why = {
-                    "top pick for Destruction Warlock and 1 more spec at level 60"
-                }
-            },
-            {
-                itemId = 13125,
-                name = "Elven Chain Boots",
-                why = {
-                    "top pick for Beast Mastery Hunter and 1 more spec at level 50"
+                    "top pick for Assassination Rogue and 2 more specs at level 50"
                 }
             }
         },
@@ -647,7 +713,7 @@ LJ.Data.ForeverDBDungeons = {
         players = 10,
         level = nil,
         range = nil,
-        status = "classic",
+        status = "other",
         newInForever = false,
         bosses = {},
         notableLoot = {},
@@ -682,24 +748,26 @@ LJ.Data.ForeverDBDungeons = {
         },
         notableLoot = {
             {
-                itemId = 16684,
-                name = "Magister's Gloves",
+                itemId = 14616,
+                name = "Bloodmail Boots",
                 why = {
-                    "Magister's Regalia set"
+                    "Bloodmail Regalia set",
+                    "top pick for Arms Warrior and 3 more specs at level 60"
                 }
             },
             {
-                itemId = 16689,
-                name = "Magister's Mantle",
+                itemId = 13967,
+                name = "Windreaver Greaves",
                 why = {
-                    "Magister's Regalia set"
+                    "top pick for Beast Mastery Hunter and 4 more specs at level 60"
                 }
             },
             {
-                itemId = 16701,
-                name = "Dreadmist Mantle",
+                itemId = 16711,
+                name = "Shadowcraft Boots",
                 why = {
-                    "Dreadmist Raiment set"
+                    "Shadowcraft Armor set",
+                    "top pick for Beast Mastery Hunter and 2 more specs at level 60"
                 }
             }
         },
@@ -728,15 +796,7 @@ LJ.Data.ForeverDBDungeons = {
             "Jin'do the Hexxer",
             "Hakkar"
         },
-        notableLoot = {
-            {
-                itemId = 19884,
-                name = "Jin'do's Judgement",
-                why = {
-                    "top pick for Arcane Mage and 2 more specs at level 60"
-                }
-            }
-        },
+        notableLoot = {},
         url = "https://foreverdb.net/dungeon/309-zulgurub"
     },
     [329] = {
@@ -773,24 +833,24 @@ LJ.Data.ForeverDBDungeons = {
         },
         notableLoot = {
             {
-                itemId = 16668,
-                name = "Kilt of Elements",
+                itemId = 23125,
+                name = "Chains of the Lich",
                 why = {
-                    "The Elements set"
+                    "top pick for Affliction Warlock and 7 more specs at level 60"
                 }
             },
             {
-                itemId = 16675,
-                name = "Beaststalker's Boots",
+                itemId = 22408,
+                name = "Ritssyn's Wand of Bad Mojo",
                 why = {
-                    "Beaststalker Armor set"
+                    "top pick for Affliction Warlock and 6 more specs at level 60"
                 }
             },
             {
-                itemId = 16678,
-                name = "Beaststalker's Pants",
+                itemId = 18727,
+                name = "Crimson Felt Hat",
                 why = {
-                    "Beaststalker Armor set"
+                    "top pick for Affliction Warlock and 5 more specs at level 60"
                 }
             }
         },
@@ -817,7 +877,29 @@ LJ.Data.ForeverDBDungeons = {
             "Rotgrip",
             "Princess Theradras"
         },
-        notableLoot = {},
+        notableLoot = {
+            {
+                itemId = 17713,
+                name = "Blackstone Ring",
+                why = {
+                    "top pick for Affliction Warlock and 14 more specs at level 50"
+                }
+            },
+            {
+                itemId = 17732,
+                name = "Rotgrip Mantle",
+                why = {
+                    "top pick for Affliction Warlock and 7 more specs at level 50"
+                }
+            },
+            {
+                itemId = 17728,
+                name = "Albino Crocscale Boots",
+                why = {
+                    "top pick for Assassination Rogue and 5 more specs at level 50"
+                }
+            }
+        },
         url = "https://foreverdb.net/dungeon/349-maraudon"
     },
     [389] = {
@@ -874,10 +956,24 @@ LJ.Data.ForeverDBDungeons = {
         },
         notableLoot = {
             {
-                itemId = 18879,
-                name = "Heavy Dark Iron Ring",
+                itemId = 11302,
+                name = "Uther's Strength",
                 why = {
-                    "top pick for Feral Combat Druid at level 60"
+                    "top pick for Discipline Priest and 5 more specs at level 50/60"
+                }
+            },
+            {
+                itemId = 13120,
+                name = "Deepfury Bracers",
+                why = {
+                    "top pick for Beast Mastery Hunter and 2 more specs at level 50"
+                }
+            },
+            {
+                itemId = 13139,
+                name = "Guttbuster",
+                why = {
+                    "top pick for Assassination Rogue and 2 more specs at level 50"
                 }
             }
         },
@@ -915,7 +1011,29 @@ LJ.Data.ForeverDBDungeons = {
             "Lord Hel'nurath",
             "Tsu'zee"
         },
-        notableLoot = {},
+        notableLoot = {
+            {
+                itemId = 18386,
+                name = "Padre's Trousers",
+                why = {
+                    "top pick for Discipline Priest and 4 more specs at level 60"
+                }
+            },
+            {
+                itemId = 18375,
+                name = "Bracers of the Eclipse",
+                why = {
+                    "top pick for Assassination Rogue and 3 more specs at level 60"
+                }
+            },
+            {
+                itemId = 18525,
+                name = "Bracers of Prosperity",
+                why = {
+                    "top pick for Holy Paladin and 2 more specs at level 60"
+                }
+            }
+        },
         url = "https://foreverdb.net/dungeon/429-dire-maul"
     },
     [469] = {
@@ -941,24 +1059,24 @@ LJ.Data.ForeverDBDungeons = {
         },
         notableLoot = {
             {
-                itemId = 19406,
-                name = "Drake Fang Talisman",
+                itemId = 11302,
+                name = "Uther's Strength",
                 why = {
-                    "top pick for Affliction Warlock and 17 more specs at level 60"
+                    "top pick for Discipline Priest and 5 more specs at level 50/60"
                 }
             },
             {
-                itemId = 19395,
-                name = "Rejuvenating Gem",
+                itemId = 13120,
+                name = "Deepfury Bracers",
                 why = {
-                    "top pick for Discipline Priest and 4 more specs at level 60"
+                    "top pick for Beast Mastery Hunter and 2 more specs at level 50"
                 }
             },
             {
-                itemId = 19403,
-                name = "Band of Forced Concentration",
+                itemId = 13139,
+                name = "Guttbuster",
                 why = {
-                    "top pick for Affliction Warlock and 2 more specs at level 60"
+                    "top pick for Assassination Rogue and 2 more specs at level 50"
                 }
             }
         },
@@ -983,15 +1101,7 @@ LJ.Data.ForeverDBDungeons = {
             "Ayamiss the Hunter",
             "Ossirian the Unscarred"
         },
-        notableLoot = {
-            {
-                itemId = 21809,
-                name = "Fury of the Forgotten Swarm",
-                why = {
-                    "top pick for Arms Warrior and 3 more specs at level 60"
-                }
-            }
-        },
+        notableLoot = {},
         url = "https://foreverdb.net/dungeon/509-ruins-of-ahnqiraj"
     },
     [531] = {
@@ -1016,29 +1126,7 @@ LJ.Data.ForeverDBDungeons = {
             "Ouro",
             "C'thun"
         },
-        notableLoot = {
-            {
-                itemId = 21602,
-                name = "Qiraji Execution Bracers",
-                why = {
-                    "top pick for Arms Warrior and 9 more specs at level 60"
-                }
-            },
-            {
-                itemId = 21585,
-                name = "Dark Storm Gauntlets",
-                why = {
-                    "top pick for Affliction Warlock and 8 more specs at level 60"
-                }
-            },
-            {
-                itemId = 21586,
-                name = "Belt of Never-ending Agony",
-                why = {
-                    "top pick for Arms Warrior and 8 more specs at level 60"
-                }
-            }
-        },
+        notableLoot = {},
         url = "https://foreverdb.net/dungeon/531-ahnqiraj-temple"
     },
     [533] = {
@@ -1071,24 +1159,24 @@ LJ.Data.ForeverDBDungeons = {
         },
         notableLoot = {
             {
-                itemId = 22954,
-                name = "Kiss of the Spider",
+                itemId = 23059,
+                name = "Ring of the Dreadnaught",
                 why = {
-                    "top pick for Arcane Mage and 13 more specs at level 60"
+                    "Dreadnaught's Battlegear set"
                 }
             },
             {
-                itemId = 23001,
-                name = "Eye of Diminution",
+                itemId = 23060,
+                name = "Bonescythe Ring",
                 why = {
-                    "top pick for Arcane Mage and 10 more specs at level 60"
+                    "Bonescythe Armor set"
                 }
             },
             {
-                itemId = 23031,
-                name = "Band of the Inevitable",
+                itemId = 23061,
+                name = "Ring of Faith",
                 why = {
-                    "top pick for Affliction Warlock and 8 more specs at level 60"
+                    "Vestments of Faith set"
                 }
             }
         },
@@ -1162,22 +1250,7 @@ LJ.Data.ForeverDBDungeons = {
         bosses = {
             "Azuregos"
         },
-        notableLoot = {
-            {
-                itemId = 272439,
-                name = "Serenity Field",
-                why = {
-                    "top pick for Discipline Priest and 4 more specs at level 60"
-                }
-            },
-            {
-                itemId = 272438,
-                name = "Weakness Analyzer",
-                why = {
-                    "top pick for Affliction Warlock and 2 more specs at level 60"
-                }
-            }
-        },
+        notableLoot = {},
         url = "https://foreverdb.net/dungeon/2791-storm-cliffs"
     },
     [2804] = {
@@ -1373,17 +1446,18 @@ LJ.Data.ForeverDBDungeons = {
                 }
             },
             {
-                itemId = 273034,
-                name = "Ephemeral Grips",
+                itemId = 273044,
+                name = "Violet Sorcerer's Robes",
                 why = {
-                    "top pick for Affliction Warlock and 3 more specs at level 30"
+                    "Violet Sorcerer's Vestments set",
+                    "top pick for Arcane Mage and 6 more specs at level 30"
                 }
             },
             {
-                itemId = 273042,
-                name = "Manascale Treads",
+                itemId = 273047,
+                name = "Unstable Crystalline Shoulderpads",
                 why = {
-                    "top pick for Arms Warrior and 3 more specs at level 30/40"
+                    "top pick for Assassination Rogue and 6 more specs at level 30"
                 }
             }
         },
@@ -1411,7 +1485,7 @@ LJ.Data.ForeverDBDungeons = {
                 itemId = 273030,
                 name = "Ring of Power Regulation",
                 why = {
-                    "top pick for Arcane Mage and 9 more specs at level 30"
+                    "top pick for Arcane Mage and 6 more specs at level 30"
                 }
             },
             {
@@ -1419,6 +1493,13 @@ LJ.Data.ForeverDBDungeons = {
                 name = "Glinteye Slippers",
                 why = {
                     "top pick for Affliction Warlock and 5 more specs at level 30"
+                }
+            },
+            {
+                itemId = 273029,
+                name = "Golemsight Long Gun",
+                why = {
+                    "top pick for Assassination Rogue and 5 more specs at level 30"
                 }
             }
         },
@@ -1487,7 +1568,29 @@ LJ.Data.ForeverDBDungeons = {
             "Plunder",
             "Durgen Dirgehammer"
         },
-        notableLoot = {},
+        notableLoot = {
+            {
+                itemId = 270227,
+                name = "Ephemeral Choker",
+                why = {
+                    "top pick for Arcane Mage and 9 more specs at level 20"
+                }
+            },
+            {
+                itemId = 271096,
+                name = "Aetherwisp Bracers",
+                why = {
+                    "top pick for Affliction Warlock and 7 more specs at level 20"
+                }
+            },
+            {
+                itemId = 271095,
+                name = "Fang of Magmatus",
+                why = {
+                    "top pick for Arcane Mage and 3 more specs at level 20"
+                }
+            }
+        },
         url = "https://foreverdb.net/dungeon/3065-the-hall-of-thanes"
     },
     [3109] = {

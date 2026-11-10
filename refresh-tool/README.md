@@ -21,7 +21,7 @@ node refresh_tool.js `
   --output .\staged\RefreshOverrides.lua
 ```
 
-The web JSON schema is intentionally explicit. Use numeric ID keys for `items`, `item_stats`, `quests`, and `world_drops`; include a `build` such as `1.60.1.70755`; and include provenance fields for every imported record when possible.
+The web JSON schema is intentionally explicit. Use numeric ID keys for `items`, `item_stats`, `quests`, and `world_drops`; include the current Forever build; and include provenance fields for every imported record when possible.
 
 The current addon ships generated static data from its earlier pipeline. The override file lets us update reviewed records without hand-editing those generated files. For a major rebuild, we can later replace the override with a full regeneration of `Items.lua`, `ItemStats.lua`, `Quests.lua`, `Instances.lua`, `WorldDrops.lua`, and `BiS.lua`.
 

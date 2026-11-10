@@ -4,7 +4,7 @@ LJ.RefreshInput = {
     format = 1,
     client = {},
     web = {
-        build = "1.60.1.70790",
+        build = "1.60.1.70862",
         provenance = {
             quest = "https://www.wowhead.com/forever/quest=96260/stronger-than-steel",
             npc = "https://www.wowhead.com/forever/npc=264072/yorn-grimtotem",

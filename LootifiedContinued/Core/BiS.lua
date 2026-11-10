@@ -378,6 +378,35 @@ function BiS.Upgrade(itemID)
     return t and t.value
 end
 
+-- Open-world rows need a live answer even when the cached target sheet was built before
+-- an item or an equipped link finished loading. Compare the drop directly with current gear.
+function BiS.WorldUpgrade(itemID)
+    local value = BiS.Upgrade(itemID)
+    if value then return value end
+    local spec = Player:GetActiveSpec()
+    if not spec or Items.IsOwned(itemID) or Items.IsOtherFaction(itemID) then return nil end
+    local level = Player.level or 1
+    if not Items.InList(itemID, spec.class, level) then return nil end
+    local minLevel, itemLevel = Items.GetKnownLevels(itemID)
+    if not minLevel or Items.UseLevelFrom(itemID, minLevel, itemLevel) > level then return nil end
+    local itemID2, _, _, equipLoc, _, classID, subclassID = C_Item.GetItemInfoInstant(itemID)
+    if not itemID2 or not equipLoc or equipLoc == "" then return nil end
+    local facts = { id = itemID, equipLoc = equipLoc, classID = classID, subclassID = subclassID }
+    if not Player:CanClassUse(facts, spec.class, level) or Scoring.MissingSkill(itemID) then return nil end
+    local stats = Scoring.GetStats(itemID)
+    if not stats then return nil end
+    local best
+    for _, slot in ipairs(Scoring.GetItemSlots(facts, spec.class, level)) do
+        local worn = Scoring.GetEquippedScore(spec, slot, true)
+        local score = Scoring.Score(itemID, spec, slot, true, stats)
+        if worn and score then
+            local gain = score - worn
+            if gain > 0 and (not best or gain > best) then best = gain end
+        end
+    end
+    return best
+end
+
 -- Every item of the list the character does not own yet, the best first.
 function BiS.Targets()
     local list = {}

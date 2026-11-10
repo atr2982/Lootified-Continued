@@ -239,7 +239,7 @@ function Lists.ZoneMobs(zone, upgradesOnly)
         if upgradesOnly then
             drops = {}
             for _, d in ipairs(all) do
-                if BiS.Upgrade(d.id) then drops[#drops + 1] = d end
+                if BiS.WorldUpgrade(d.id) then drops[#drops + 1] = d end
             end
         end
         if not upgradesOnly or #drops > 0 then
