@@ -1,0 +1,103 @@
+## Interface: 16001
+## Title: Lootified Continued
+## Notes: English-only WoW: Forever loot journal, dungeon quests, loot, level-aware Best in Slot and percent-based upgrades. Quest and world map pins remain available.
+## Author: atr2982 (continuation based on Lootified by Alen)
+## Version: 1.2.0-continued1
+## IconTexture: Interface\AddOns\LootifiedContinued\Media\Logo64
+## Category: Loot
+## SavedVariables: LootifiedData
+## SavedVariablesPerCharacter: LootifiedCharData
+## AddonCompartmentFunc: Lootified_OnAddonCompartmentClick
+## AddonCompartmentFuncOnEnter: Lootified_OnAddonCompartmentEnter
+## AddonCompartmentFuncOnLeave: Lootified_OnAddonCompartmentLeave
+## X-License: GPL-3.0
+
+Core\Init.lua
+Core\Util.lua
+Core\Modules.lua
+
+Data\Items.lua
+Data\Instances.lua
+Data\BiS.lua
+Data\WebBiS.lua
+Data\Quests.lua
+Data\ItemStats.lua
+Data\ItemClasses.lua
+Data\Crafted.lua
+Data\WorldDrops.lua
+Data\WorldQuests.lua
+Data\CollectIDs.lua
+Data\SimInventory.lua
+Data\SpellPower.lua
+Data\Locale_enUS.lua
+Data\BuildInfo.lua
+
+Core\Locale.lua
+
+Core\Items.lua
+Core\Player.lua
+Core\Scoring.lua
+Core\StatPrio.lua
+Core\Quests.lua
+Core\MapPin.lua
+Core\BiS.lua
+Core\Lists.lua
+
+Sim\Engine.lua
+Sim\Character.lua
+Sim\Pet.lua
+Sim\Paladin.lua
+Sim\Warrior.lua
+Sim\Hunter.lua
+Sim\Rogue.lua
+Sim\Priest.lua
+Sim\Shaman.lua
+Sim\Mage.lua
+Sim\Warlock.lua
+Sim\Druid.lua
+Sim\Jobs.lua
+Sim\SimBiS.lua
+Sim\ItemCheck.lua
+Sim\Export.lua
+
+UI\Glyphs.lua
+UI\Theme.lua
+UI\Widgets.lua
+UI\ListFilter.lua
+UI\StatPrioView.lua
+UI\MainFrame.lua
+UI\BiSPage.lua
+UI\WishlistPage.lua
+UI\SearchPage.lua
+UI\ItemPage.lua
+UI\Pane\Kit.lua
+UI\Pane\Quests.lua
+UI\Pane\Journal.lua
+UI\Pane\ForYou.lua
+UI\Pane\World.lua
+UI\Pane\Wishlist.lua
+UI\Pane\Search.lua
+UI\Pane\Item.lua
+UI\Database\Kit.lua
+UI\Database\Items.lua
+UI\Database\Mobs.lua
+UI\Database\Quests.lua
+UI\Database\Places.lua
+UI\Tour.lua
+UI\LayoutPicker.lua
+UI\Settings.lua
+UI\SimWindow.lua
+UI\SimProgress.lua
+UI\SimSpeed.lua
+UI\SimNotice.lua
+UI\Tooltip.lua
+UI\ItemCheckBox.lua
+UI\ExportBox.lua
+UI\HelpBox.lua
+UI\RatingPicker.lua
+UI\Minimap.lua
+UI\WorldMapPins.lua
+Data\CollectedOverrides.lua
+Data\ForeverDB.lua
+Data\ForeverDBDungeons.lua
+Data\RefreshOverrides.lua
