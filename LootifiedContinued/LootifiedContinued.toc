@@ -2,7 +2,7 @@
 ## Title: Lootified Continued
 ## Notes: English-only WoW: Forever loot journal, dungeon quests, loot, level-aware Best in Slot and percent-based upgrades. Quest and world map pins remain available.
 ## Author: atr2982 (continuation based on Lootified by Alen)
-## Version: 1.2.0-continued1
+## Version: 1.2.0-continued
 ## IconTexture: Interface\AddOns\LootifiedContinued\Media\Logo64
 ## Category: Loot
 ## SavedVariables: LootifiedData
