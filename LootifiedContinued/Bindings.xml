@@ -1,8 +1,0 @@
-<Bindings>
-	<Binding name="LOOTIFIED_TOGGLE" header="LOOTIFIED" category="ADDONS">
-		LootifiedAddon:Toggle()
-	</Binding>
-	<Binding name="LOOTIFIED_BIS" category="ADDONS">
-		LootifiedAddon:Open("bis")
-	</Binding>
-</Bindings>
