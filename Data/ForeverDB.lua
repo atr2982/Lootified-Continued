@@ -297544,11 +297544,13 @@ LJ.Data.ForeverDB = {
         [96987] = {
             name = "Opportunistic Education",
             level = 33,
-            min = nil,
+            min = 24,
             side = "BOTH",
             src = "forever",
             zone = "City of Dalaran",
-            map = 1416
+            map = 1416,
+            startText = "Rexxie Copperclutch, City of Dalaran",
+            finishText = "Rexxie Copperclutch, City of Dalaran"
         },
         [96988] = {
             name = "Source of Power",

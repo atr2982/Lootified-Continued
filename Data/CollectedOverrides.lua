@@ -82221,6 +82221,8 @@ local c = {
             name = "Opportunistic Education",
             level = 33,
             money = 0,
+            startText = "Rexxie Copperclutch, City of Dalaran",
+            finishText = "Rexxie Copperclutch, City of Dalaran",
             obj = "Collect the Founding of Dalaran from the City of Dalaran for Rexxie Copperclutch near the sewer entrance.",
             choice = {
                 279845,
