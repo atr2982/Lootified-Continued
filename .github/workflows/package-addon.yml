@@ -1,0 +1,30 @@
+name: Package LootifiedContinued
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v4
+
+      - name: Build clean addon archive
+        shell: bash
+        run: |
+          mkdir -p staging/LootifiedContinued
+          cp -R LootifiedContinued/. staging/LootifiedContinued/
+          cd staging
+          zip -r ../LootifiedContinued.zip LootifiedContinued
+
+      - name: Publish GitHub release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: LootifiedContinued.zip
+          generate_release_notes: true
