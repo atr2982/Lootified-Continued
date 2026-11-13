@@ -368,9 +368,6 @@ local function FillInstant(rec)
 end
 
 local function FillFull(rec)
-    -- an item the shipped data names as without server data is not revealed yet: the client's data of it is never
-    -- taken (the items Forever reveals since come with a new /lf collect and an update of the addon)
-    if bakedMissing and bakedMissing[rec.id] then return false end
     local name, link, quality, itemLevel, minLevel, _, _, _, _, _, _, _, _, bindType, _, setID = C_Item.GetItemInfo(rec.id)
     if name then
         rec.setID = setID
@@ -566,8 +563,13 @@ end
 function Items.Get(itemID)
     local rec = cache[itemID] or NewRecord(itemID)
     if not rec.loaded then
-        -- an item known as without server data is never asked for (not even the client: that would ask the server)
-        if not Items.IsKnownMissing(itemID) and not FillFull(rec) and not rec.failed then Items.Request(itemID) end
+        -- A prior collection may have marked an item missing, but a newer Forever client can
+        -- still have live data for it. Accept cached client data without mass-requesting every
+        -- stale missing ID in the database.
+        local cached = C_Item.IsItemDataCachedByID(itemID)
+        if (not Items.IsKnownMissing(itemID) or cached) and not FillFull(rec) and not rec.failed then
+            Items.Request(itemID)
+        end
     elseif rec.fromCache and not rec.liveChecked and not Items.IsShipped(itemID) then
         rec.liveChecked = true
         if C_Item.IsItemDataCachedByID(itemID) then FillFull(rec) end

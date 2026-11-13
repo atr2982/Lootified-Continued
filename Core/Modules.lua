@@ -1,9 +1,6 @@
 -- Lootified - the modules: the pages of the Modern and Classic looks, each of which the player can switch off in the
 -- settings (LootifiedData.modules). A module that is off has no tab; links to it open the start page. Best in Slot off
--- also takes away everything else of it: the upgrade marks and tooltip lines, the simulator (its window, Sim on For you,
--- "Simulate" in the item menu), the upgrade check for loot (UI/ItemCheckBox.lua), the "Upgrades only" filters and "Add
--- my Best in Slot" on the wishlist; For you says it is off, with a button that switches it on. Wishlist off takes its
--- stars, tooltip mark and drop alerts. At least one module stays on.
+-- also takes away its upgrade marks, tooltip lines and upgrade check for loot. At least one module stays on.
 local _, LJ = ...
 
 local Modules = {}
@@ -18,12 +15,11 @@ Modules.LIST = {
     { key = "world", name = "Open World", glyph = "globe",
       text = "The rares and mobs of every zone with their drops and camps." },
     { key = "bis", name = "Best in Slot", glyph = "crown",
-      text = "Your best gear for every slot, the simulator, the crowns on items, the tooltip line and the upgrade check for loot." },
-    { key = "wishlist", name = "Wishlist", glyph = "star",
-      text = "The items you starred; the stars, the tooltip mark and the alert when one drops." },
+      text = "Your best gear for every slot, the crowns on items, the tooltip line and the percent upgrade check for loot." },
 }
 
 function Modules.On(key)
+    if key == "wishlist" then return false end
     return LJ.db.modules[key] == true
 end
 

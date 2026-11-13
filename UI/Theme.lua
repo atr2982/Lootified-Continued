@@ -84,9 +84,10 @@ Theme.ON_DARK = {
 
 Theme.SKINS = { "modern", "classic", "database" }
 Theme.skin = "modern"
+Theme.databaseClassic = false
 
 function Theme.IsClassic()
-    return Theme.skin == "classic"
+    return Theme.skin == "classic" or (Theme.skin == "database" and Theme.databaseClassic)
 end
 
 function Theme.IsDatabase()
@@ -299,7 +300,7 @@ function Theme.SetAccent(c, instant)
     if not c then c = C.defaultAccent end
     Theme.pageAccent = c
     local user = Theme.UserAccent()
-    if Theme.skin == "classic" then
+    if Theme.IsClassic() then
         c = user or C.defaultAccent
     elseif Theme.skin == "database" then
         c = user or Theme.DATABASE_ACCENT
@@ -431,7 +432,7 @@ end
 function Theme.ApplyFontDef(f, name)
     local def = Theme.FONT_DEFS[name] or Theme.FONT_DEFS.body
     f:SetFont(Theme.FontFile(def[1]), def[2], "")
-    if Theme.skin == "classic" then
+    if Theme.IsClassic() then
         f:SetShadowOffset(1, -1)
         f:SetShadowColor(0, 0, 0, 1)
     else
@@ -521,7 +522,7 @@ Theme.RADII = { 4, 6, 8, 10, 12 }
 Theme.CLASSIC_RADIUS = 4
 
 function Theme.SnapRadius(radius)
-    if Theme.skin == "classic" then return Theme.CLASSIC_RADIUS end
+    if Theme.IsClassic() then return Theme.CLASSIC_RADIUS end
     local best = Theme.RADII[1]
     for _, r in ipairs(Theme.RADII) do
         if math.abs(r - (radius or 8)) < math.abs(best - (radius or 8)) then best = r end
@@ -548,17 +549,19 @@ end
 function Theme.SetSkin(skin)
     skin = Theme.ValidSkin(skin)
     Theme.skin = skin
-    for key, value in pairs(PALETTES[skin]) do
+    local palette = (skin == "database" and Theme.databaseClassic) and CLASSIC_COLORS or PALETTES[skin]
+    for key, value in pairs(palette) do
         local c = C[key]
         if c then c[1], c[2], c[3], c[4] = value[1], value[2], value[3], value[4] or 1 end
     end
-    Theme.FONT_DEFS = Theme.cyrillic and CLASSIC_FONT_DEFS or FONT_DEFS_BY_SKIN[skin]
+    Theme.FONT_DEFS = Theme.cyrillic and CLASSIC_FONT_DEFS
+        or ((skin == "database" and Theme.databaseClassic) and CLASSIC_FONT_DEFS or FONT_DEFS_BY_SKIN[skin])
     wipe(Theme.PANE)
-    for key, value in pairs(skin == "classic" and Theme.HEARTH or Theme.GLASS) do Theme.PANE[key] = value end
+    for key, value in pairs(Theme.IsClassic() and Theme.HEARTH or Theme.GLASS) do Theme.PANE[key] = value end
     for name, f in pairs(fontObjects) do Theme.ApplyFontDef(f, name) end
     for key, value in pairs(MODERN_TEX) do Theme.TEX[key] = value end
     -- glows only in the glass looks
-    if skin == "classic" then Theme.TEX.glow, Theme.TEX.glowLine = nil, nil end
+    if Theme.IsClassic() then Theme.TEX.glow, Theme.TEX.glowLine = nil, nil end
     -- every accent listener belongs to a window of the old look (the main window and its
     -- tours), which a look switch builds again: none of their parts takes the new look's colors
     wipe(accentListeners)

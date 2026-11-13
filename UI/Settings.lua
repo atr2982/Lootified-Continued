@@ -213,15 +213,8 @@ local SCALES = { 0.8, 0.9, 1.0, 1.1, 1.2 }
 
 local function BuildGeneral(page)
     page:Heading("General", "How items are rated and the window.")
-    -- how this character's items are rated (UI/RatingPicker.lua); nothing marked before the first pick
-    page:Label("Rate items (this character)")
-    page:Chips({ options = UI.RatingPicker.OPTIONS,
-        get = function() return LJ.cdb.rating end,
-        set = function(v)
-            UI.RatingPicker:Set(v)
-            Fire("rating")
-        end })
-    page:Text(L("Percent: every upgrade in percent by your spec's stat weights, for tanks, DPS and healers."), "bodySmall", C.text2)
+    page:Label("Item scoring")
+    page:Text(L("Percent scoring is always used for upgrades and Best in Slot."), "bodySmall", C.text2)
     page:Space(6)
     page:Label("Window size")
     local options = {}
@@ -251,9 +244,8 @@ local function ResetGeneral()
 end
 
 local function BuildModules(page)
-    page:Heading("Modules", "Switch off what you do not use: its tab goes away, Best in Slot also takes its crowns and "
-        .. "tooltip lines with it, Wishlist its stars, tooltip mark and alerts. One module always stays on. The "
-        .. "database look has its own pages.")
+    page:Heading("Modules", "Switch off what you do not use: its tab goes away, and Best in Slot also takes its crowns, "
+        .. "tooltip lines and upgrade check with it. One module always stays on. The database look has its own pages.")
     for _, m in ipairs(Modules.LIST) do
         page:Switch({ title = m.name, text = m.text, glyph = m.glyph,
             get = function() return Modules.On(m.key) end,
@@ -349,12 +341,9 @@ local function BuildTooltips(page)
     local width = page.width - PREVIEW_WIDTH - 16
     local top = page.y
     local bisOn = function() return Modules.On("bis") end
-    DbSwitch(page, "tooltipUpgrade", "Upgrade for my spec", "The damage the sim found for the item against what you wear, or that it is on your Best in Slot list.",
+    DbSwitch(page, "tooltipUpgrade", "Upgrade for my spec", "The percent upgrade for the item compared with what you wear, or that it is on your Best in Slot list.",
         { width = width, enabled = bisOn, why = "The Best in Slot module is off (Modules)." })
     DbSwitch(page, "tooltipSource", "Where it drops", "The boss, rare or zone that drops it, with the chance.", { width = width })
-    DbSwitch(page, "tooltipQuests", "Quests", "The quests that give the item or need it.", { width = width })
-    DbSwitch(page, "tooltipWishlist", "Wishlist mark", "Says when the item is on your wishlist.",
-        { width = width, enabled = function() return Modules.On("wishlist") end, why = "The Wishlist module is off (Modules)." })
     -- the preview: a real item tooltip with the lines as they are set
     local label = Widgets.Text(page.frame, "label", Kit.SectionColor())
     label:SetPoint("TOPLEFT", width + 16, -top)
@@ -380,20 +369,18 @@ local function BuildTooltips(page)
     page.frame:HookScript("OnHide", function() tip:Hide() end)
 end
 
-local TOOLTIP_KEYS = { "tooltipUpgrade", "tooltipSource", "tooltipQuests", "tooltipWishlist" }
+local TOOLTIP_KEYS = { "tooltipUpgrade", "tooltipSource" }
 
 local function BuildMap(page)
     page:Heading("Map & alerts", "Dungeon entrances on the world map and what Lootified does by itself.")
     DbSwitch(page, "worldMapEntrances", "Dungeon entrances on the world map", "A pin at every entrance; a click opens the dungeon.")
-    DbSwitch(page, "wishlistAlerts", "Alert when a wishlist item drops", "A message and a sound when an item you starred drops or is rolled for.",
-        { enabled = function() return Modules.On("wishlist") end, why = "The Wishlist module is off (Modules)." })
-    DbSwitch(page, "upgradeCheck", "Upgrade check for loot", "Beside every loot roll, and in a window on Alt+Click on any item: is it an upgrade for you? Sim lets it fight against what you wear.",
+    DbSwitch(page, "upgradeCheck", "Upgrade check for loot", "Beside every loot roll, and in a window on Alt+Click on any item: is it an upgrade for you?",
         { enabled = function() return Modules.On("bis") end, why = "The Best in Slot module is off (Modules)." })
     DbSwitch(page, "autoOpenInstance", "Open the current dungeon", "Inside a dungeon, Lootified opens on it.",
         { enabled = function() return Modules.On("journal") end, why = "The Journal module is off (Modules)." })
 end
 
-local MAP_KEYS = { "worldMapEntrances", "wishlistAlerts", "upgradeCheck", "autoOpenInstance" }
+local MAP_KEYS = { "worldMapEntrances", "upgradeCheck", "autoOpenInstance" }
 
 local function SetLanguage(value)
     LJ.db.language = value

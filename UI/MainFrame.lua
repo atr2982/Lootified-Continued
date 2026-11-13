@@ -22,7 +22,7 @@ UI.state = { page = nil }
 local FRAME_WIDTH, FRAME_HEIGHT = 980, 620
 local TOP_HEIGHT = 48
 local FOOT_HEIGHT = 26      -- the footer under the pages: the version, the homepage and Discord (every look)
-local DATABASE_TOP = 52     -- the database look's top bar: the logo, DATABASE and the four tabs
+local DATABASE_TOP = 52     -- the database look's top bar: the logo, DATABASE and the three tabs
 local SEARCH_WIDTH = 250
 -- Classic look: title bar (34) and the row of page buttons (38) above the brown panel that holds the pages (12 from
 -- the window's sides, the footer below it, 12 inside). The window is taller by what the second row needs; the page
@@ -43,11 +43,11 @@ UI.SIDEBAR_WIDTH = 244
 UI.LOOKS = {
     { key = "modern", name = "Modern", text = "Dark glass with the dungeon art, 3D models and soft animations." },
     { key = "classic", name = "Classic", text = "Dark leather and gold titles, every dungeon as a picture." },
-    { key = "database", name = "Database", text = "Look up every item, mob, quest and place, with search, filters and details." },
 }
 
 -- The English name of a look (translate it where it is shown).
 function UI.LookName(key)
+    if key == "database" then return "Database" end
     for _, look in ipairs(UI.LOOKS) do
         if look.key == key then return look.name end
     end
@@ -343,12 +343,13 @@ end
 
 
 -- Navigation labels in the look's spelling (upper case in the glass looks); the classic look's buttons carry glyphs,
--- the database look's tabs too (its four pages, no counts).
+-- the database look's tabs too (no counts).
 local function NavDefs()
     local defs = {}
     if Theme.IsDatabase() then
+        defs[1] = { key = "mainview", text = Theme.Case(L("Main View")), glyph = "home", count = false }
         for i, t in ipairs(LJ.Database.TABS) do
-            defs[i] = { key = t.key, text = Theme.Case(L(t.text)), glyph = t.glyph, count = false }
+            defs[i + 1] = { key = t.key, text = Theme.Case(L(t.text)), glyph = t.glyph, count = false }
         end
         return defs
     end
@@ -356,6 +357,8 @@ local function NavDefs()
     for i, m in ipairs(LJ.Modules.LIST) do
         defs[i] = { key = m.key, text = Theme.Case(L(m.name)), glyph = Theme.IsClassic() and m.glyph or nil }
     end
+    -- Keep the database discoverable without requiring a trip through Settings.
+    defs[#defs + 1] = { key = "database", text = Theme.Case(L("Database")), glyph = Theme.IsClassic() and "grid" or nil }
     return defs
 end
 
@@ -467,12 +470,17 @@ local function CreateTopBar(frame)
         end
     end)
 
-    -- a count on a tab (the wishlist) makes the tabs wider: the search box beside them fits again
     local function Fit() if frame:IsShown() then frame.FitSearch() end end
     local nav, close
     if database then
-        -- the four pages as tabs; every page has its own search, so the bar has none
-        nav = Widgets.CreateTabs(top, NavDefs(), function(key) UI:Open(key) end,
+        -- the database pages as tabs; every page has its own search, so the bar has none
+        nav = Widgets.CreateTabs(top, NavDefs(), function(key)
+            if key == "mainview" then
+                UI:ApplySkin(UI.previousSkin ~= "database" and UI.previousSkin or "modern")
+            else
+                UI:Open(key)
+            end
+        end,
             { font = "nav", height = top:GetHeight(), pad = 14, iconAccent = true })
         nav:SetPoint("LEFT", top.label, "RIGHT", 26, 0)
         close = Widgets.CreateButton(top, nil, "icon", "close", 30, 30)
@@ -483,18 +491,30 @@ local function CreateTopBar(frame)
         word:Hide()
         CreateClassicTitle(frame, top)
         -- the page buttons in the second row
-        nav = Widgets.CreateTabs(top, NavDefs(), function(key) UI:Open(key) end, { font = "nav", height = CLASSIC_TOP - CLASSIC_TITLE, onLayout = Fit })
+        nav = Widgets.CreateTabs(top, NavDefs(), function(key)
+            if key == "database" then
+                UI:ApplySkin("database")
+            else
+                UI:Open(key)
+            end
+        end, { font = "nav", height = CLASSIC_TOP - CLASSIC_TITLE, onLayout = Fit })
         nav:SetPoint("TOPLEFT", top, "TOPLEFT", CLASSIC_MARGIN, -CLASSIC_TITLE)
         close = CreateClassicClose(frame, top)
     else
-        nav = Widgets.CreateTabs(top, NavDefs(), function(key) UI:Open(key) end,
+        nav = Widgets.CreateTabs(top, NavDefs(), function(key)
+            if key == "database" then
+                UI:ApplySkin("database")
+            else
+                UI:Open(key)
+            end
+        end,
             { font = "nav", height = top:GetHeight(), pad = 10, onLayout = Fit })
         nav:SetPoint("LEFT", word, "RIGHT", 18, 0)
         close = Widgets.CreateButton(top, nil, "icon", "close", 30, 30)
         close:SetPoint("RIGHT", -10, 0)
         close:SetScript("OnClick", function() frame:Hide() end)
     end
-    nav:SetWidth((classic and 560) or (database and 480) or 360)
+    nav:SetWidth(database and 560 or (classic and 650) or 470)
     frame.nav = nav
     UI:ApplyModules()
     Widgets.SetTooltip(close, "Close", nil, "ANCHOR_BOTTOM")
@@ -747,9 +767,6 @@ function UI:UpdateNav()
     local active = self.state.page
     if active == "search" or active == "item" then active = nil end
     self.frame.nav:Select(active)
-    local count = 0
-    for _ in pairs(LJ.cdb.wishlist) do count = count + 1 end
-    self.frame.nav:SetCount("wishlist", count)
 end
 
 function UI:ShowPage(key, ...)
@@ -778,7 +795,7 @@ end
 
 -- The module of each page of the Modern and Classic looks (the item and search pages belong to none).
 local PAGE_MODULE = { foryou = "foryou", home = "journal", instance = "journal", quest = "journal", journal = "journal",
-    world = "world", bis = "bis", wishlist = "wishlist" }
+    world = "world", bis = "bis" }
 
 -- The tabs of the modules that are off are hidden (the database look has its own tabs).
 function UI:ApplyModules()
@@ -802,13 +819,13 @@ LJ:Listen("MODULES_CHANGED", function()
 end)
 
 -- Public: open the journal on a page.
--- home(kind) | instance(key, bossIndex) | quest(questID) | item(itemID) | foryou | journal | bis | wishlist | world(map, npcID)
+-- home(kind) | instance(key, bossIndex) | quest(questID) | item(itemID) | foryou | journal | bis | world(map, npcID)
 -- | search(text)
 function UI:Open(page, arg1, arg2)
     if self.LayoutPicker:AskFirst(function() self:Open(page, arg1, arg2) end) then return end
     local frame = self:CreateMainFrame()
     if Theme.IsDatabase() then
-        -- the database look has its own four pages: every address of the other looks leads to one of them
+        -- the database look has its own pages: every address of the other looks leads to one of them
         frame:Show()
         self:ShowPage(LJ.Database.Route(page or self.state.page, arg1, arg2))
         return
@@ -892,7 +909,14 @@ end
 -- module that is on; the database look: Items).
 function UI:ApplySkin(skin)
     skin = Theme.ValidSkin(skin)
-    LJ.db.skin = skin
+    if skin == "database" and Theme.skin ~= "database" then
+        self.previousSkin = Theme.skin
+        Theme.databaseClassic = self.previousSkin == "classic"
+    elseif skin ~= "database" then
+        Theme.databaseClassic = false
+    end
+    -- Database is a view, not a saved look; keep Modern or Classic as the next-login style.
+    if skin ~= "database" then LJ.db.skin = skin end
     if Theme.skin == skin then return end
     local old = self.frame
     local wasShown = old and old:IsShown()
@@ -933,7 +957,6 @@ local function RefreshFor(message)
     UI:RefreshCurrent()
 end
 LJ:Listen("ITEMS_UPDATED", RefreshFor)
-LJ:Listen("WISHLIST_CHANGED", RefreshFor)
 LJ:Listen("PLANS_CHANGED", RefreshFor)
 LJ:Listen("SPEC_CHANGED", RefreshFor)
 -- the classic title bar names the character, its level and spec

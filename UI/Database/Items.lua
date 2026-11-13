@@ -150,7 +150,9 @@ local function Prepare(list, _, sort)
     local forYou = sort.key == "foryou"
     for _, rec in ipairs(list) do
         rec.bis = picks[rec.id]   -- true or nil (no field more on thousands of records)
-        if forYou then rec.up = BiS.Upgrade(rec.id) end
+        -- Keep the large database list responsive: future-item scoring is calculated when a row is visible or
+        -- selected, while current Best in Slot targets still sort immediately.
+        if forYou then rec.up = BiS.Target(rec.id) and BiS.Upgrade(rec.id) or nil end
     end
 end
 
@@ -160,7 +162,7 @@ end
 
 local SORTS = {
     -- For you: the Best in Slot picks, then the upgrades (the biggest first), then the rest
-    { key = "foryou", text = "For you", column = 4, compare = function(a, b)
+    { key = "foryou", text = "%", column = 4, compare = function(a, b)
         if a.bis ~= b.bis then return a.bis end
         local ua, ub = a.up or -1, b.up or -1
         if ua ~= ub then return ua > ub end
@@ -231,10 +233,11 @@ Kit.KINDS.dbItem = {
         DB.PlaceCell(f, f.slot, 2)
         f.level:SetText(rec.level > 1 and tostring(rec.level) or "")
         DB.PlaceCell(f, f.level, 3)
-        local up = BiS.Upgrade(rec.id)
-        f.up:SetShown(up and true or false)
-        if up then
-            f.up:Set(DB.UpgradeText(rec.id), "ok", "upgrade")
+        local delta = BiS.PotentialDeltaPercent(rec.id)
+        local upText = delta and (delta > 0 and string.format("+%.1f%%", delta) or string.format("%.1f%%", delta))
+        f.up:SetShown(delta ~= nil)
+        if delta ~= nil then
+            f.up:Set(upText, delta > 0 and "ok" or (delta < 0 and "red" or "neutral"), delta > 0 and "upgrade" or "minus")
             f.up:ClearAllPoints()
             f.up:SetPoint("RIGHT", f, "LEFT", cols.pos[4] + page.def.columns[4].width, 1)
         end
@@ -363,11 +366,16 @@ local function FillDetail(page, rec)
     hero.type:SetText(table.concat(facts, " · "))
     local spec = Player:GetActiveSpec()
     local up = BiS.Upgrade(id)
+    local upText = up and BiS.UpgradeText(id)
+    if not up then
+        up = BiS.PotentialUpgradePercent(id)
+        upText = up and string.format("+%.1f%%", up)
+    end
     local color, line = UpgradeLine(rec, item, up, spec)
     hero.up:SetShown(up and true or false)
     hero.upText:ClearAllPoints()
     if up then
-        hero.up:Set(DB.UpgradeText(id), "ok", "upgrade")
+        hero.up:Set(upText, "ok", "upgrade")
         hero.upText:SetPoint("LEFT", hero.up, "RIGHT", 10, 0)
     else
         hero.upText:SetPoint("BOTTOMLEFT", 18, 18)
@@ -475,7 +483,7 @@ DB.Page({
         { key = "sources", label = "Source", kind = "multi", options = SOURCES },
     },
     columns = { { title = "Item" }, { title = "Slot", width = 92 }, { title = "Lv", width = 26 },
-        { title = "For you", width = 64, justify = "RIGHT" } },
+        { title = "%", width = 64, justify = "RIGHT" } },
     rowKind = "dbItem", icon = DB.ICON,
     Records = Records, Passes = Passes, Prepare = Prepare,
     SearchKey = function(rec) return DB.SearchKey(rec.name, rec.slot, SourceText(rec)) end,

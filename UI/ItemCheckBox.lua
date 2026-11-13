@@ -124,12 +124,11 @@ local function Words(v)
         if dir == "down" then return "minus", C.red, L("Not an upgrade"), note end
         return "minus", C.text3, L("About the same"), note
     elseif v.kind == "estimate" then
-        local note = v.canSim and L("Estimate from its stats: Sim tells for sure.") or L("Estimate from its stats.")
+        local note = L("Estimate from its stats.")
         if v.better then return "upgrade", C.warn, L("Probably an upgrade"), note end
         return "minus", C.text3, L("Probably not an upgrade"), note
     elseif v.kind == "unknown" then
-        return "chart", C.text3, L("Not simmed yet"),
-            v.canSim and L("Sim: it fights against what you wear.") or L("The game has not sent all of its data yet.")
+        return "chart", C.text3, L("No percent data yet"), L("The game has not sent all of its data yet.")
     elseif v.kind == "cannot" then
         return "xCircle", C.text3, L("Not for you"), v.why
     elseif v.kind == "level" then
@@ -202,12 +201,12 @@ local function Refresh(f)
     -- Sim, with a number too (Stop while this item fights)
     local running = ItemCheck.running and ItemCheck.running.key == key and ItemCheck.running
     local problem = ItemCheck.problems[key]
-    f.sim:SetShown(v.canSim == true)
+    f.sim:SetShown(false)
     if running then
         f.sim:SetLabel("Stop")
         f.sim:SetGlyph("xCircle")
     else
-        f.sim:SetLabel("Sim")
+        f.sim:SetLabel("Percent")
         f.sim:SetGlyph("lightning")
     end
     -- the number: the damage the sim found, or (Percent) the share by the stat weights

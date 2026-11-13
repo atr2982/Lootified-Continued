@@ -172,29 +172,6 @@ function Tooltip.AddLines(tooltip, itemID, force, link, hint)
         end
     end
 
-    local Quests = LJ.Quests
-    if Quests and (db.tooltipQuests or force) then
-        local function QuestSource(list, kind)
-            local q = list and list[1] and Quests.Get(list[1])
-            if not q then return end
-            Start()
-            AddSource(tooltip, "exclamation", q.name, nil, L(kind) .. More(list))
-        end
-        QuestSource(Quests.rewardOf[itemID], "Quest reward")
-        if not Quests.rewardOf[itemID] then
-            -- open world quest: the one for this character first, with the zone of the quest giver
-            local list = Items.GetWorldQuestSources(itemID)
-            local q = list and list[1]
-            if q then
-                Start()
-                local zone = Items.GetQuestZone(q)
-                AddSource(tooltip, "exclamation", q.name, nil, L("Quest reward") .. (zone and (" · " .. zone) or "") .. More(list))
-            end
-        end
-        QuestSource(Quests.neededFor[itemID], "Needed for quest")
-        if Quests.startedBy[itemID] then QuestSource({ Quests.startedBy[itemID] }, "Starts the quest") end
-    end
-
     -- where a special quest item or key comes from (Data/Items.lua ItemNotes, German when German is used)
     local note = (db.tooltipSource or force) and LJ.Data.ItemNotes and LJ.Data.ItemNotes[itemID]
     if note then
@@ -207,9 +184,9 @@ function Tooltip.AddLines(tooltip, itemID, force, link, hint)
     end
     if hint and db.tooltipUpgrade and db.upgradeCheck and LJ.Modules.On("bis") then
         local v = LJ.ItemCheck.Get(link)
-        if v and v.canSim and v.kind ~= "sim" then
+        if v and not LJ.NO_SIM and v.canSim and v.kind ~= "sim" then
             Start()
-            tooltip:AddLine(Theme.GlyphString("cursor", 12, HINT) .. " " .. L("Alt+Click: sim it against what you wear"),
+            tooltip:AddLine(Theme.GlyphString("cursor", 12, HINT) .. " " .. L("Alt+Click: compare its percent upgrade with what you wear"),
                 HINT[1], HINT[2], HINT[3])
         end
     end

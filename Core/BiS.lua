@@ -17,6 +17,7 @@ LJ.BiS = BiS
 local Items = LJ.Items
 local Player = LJ.Player
 local Scoring = LJ.Scoring
+local potentialCache, potentialDeltaCache = {}, {}
 
 BiS.LEFT_SLOTS = { "HEAD", "NECK", "SHOULDER", "BACK", "CHEST", "WRIST", "HANDS" }
 BiS.RIGHT_SLOTS = { "WAIST", "LEGS", "FEET", "FINGER1", "FINGER2", "TRINKET1", "TRINKET2" }
@@ -372,10 +373,11 @@ function BiS.Target(itemID)
     return t
 end
 
--- The sort value of an item on the list (bigger: better), nil when it is not on it.
+-- The sort value of an item on the list (bigger: better). If it is not an eligible
+-- current-level target, return the same stat-weight gain as a future-item preview.
 function BiS.Upgrade(itemID)
     local t = BiS.Target(itemID)
-    return t and t.value
+    return (t and t.value) or BiS.PotentialUpgrade(itemID)
 end
 
 -- Open-world rows need a live answer even when the cached target sheet was built before
@@ -407,6 +409,63 @@ function BiS.WorldUpgrade(itemID)
     return best
 end
 
+-- A preview-only percentage for the Database Items page. Unlike the normal upgrade
+-- list, this intentionally ignores the item's required level so future gear can be
+-- compared for reference. It still requires that the active class can eventually use
+-- the item and uses the same stat weights and equipped gear as normal Percent scoring.
+function BiS.PotentialDelta(itemID)
+    local cached = potentialDeltaCache[itemID]
+    if cached ~= nil then return cached ~= false and cached or nil end
+    local spec = Player:GetActiveSpec()
+    if not spec or Items.IsOwned(itemID) or Items.IsOtherFaction(itemID) then return nil end
+    local _, _, _, equipLoc, _, classID, subclassID = C_Item.GetItemInfoInstant(itemID)
+    if not equipLoc or equipLoc == "" then return nil end
+    local facts = { id = itemID, equipLoc = equipLoc, classID = classID, subclassID = subclassID }
+    if not Player:CanClassUse(facts, spec.class) then potentialDeltaCache[itemID] = false return nil end
+    -- Database rows can be backed by shipped or collected data even when the live item record
+    -- has not finished loading yet. Use every available Forever source before giving up.
+    local function usableStats(stats)
+        return stats and next(stats) and stats or nil
+    end
+    local stats = usableStats(Scoring.GetCachedStats(itemID))
+        or usableStats(Items.GetKnownStats(itemID, {}))
+        or usableStats(Scoring.GetStats(itemID))
+    if not stats then
+        local link = select(2, C_Item.GetItemInfo(itemID))
+        stats = link and usableStats(Scoring.GetStatsForLink(link)) or nil
+    end
+    stats = stats or usableStats(Scoring.ClientStats(itemID))
+    if not stats then return nil end
+    local best
+    for _, slot in ipairs(Scoring.GetItemSlots(facts, spec.class)) do
+        local worn = Scoring.GetEquippedScore(spec, slot, true)
+        local score = Scoring.Score(itemID, spec, slot, true, stats)
+        if worn and score then
+            local gain = score - worn
+            if not best or gain > best then best = gain end
+        end
+    end
+    potentialDeltaCache[itemID] = best or false
+    return best
+end
+
+function BiS.PotentialUpgrade(itemID)
+    local gain = BiS.PotentialDelta(itemID)
+    return gain and gain > 0 and gain or nil
+end
+
+function BiS.PotentialUpgradePercent(itemID)
+    local gain = BiS.PotentialUpgrade(itemID)
+    local total = LJ.ItemCheck.WornTotal(Player:GetActiveSpec())
+    return gain and total and total > 0 and gain / total * 100 or nil
+end
+
+function BiS.PotentialDeltaPercent(itemID)
+    local gain = BiS.PotentialDelta(itemID)
+    local total = LJ.ItemCheck.WornTotal(Player:GetActiveSpec())
+    return gain and total and total > 0 and gain / total * 100 or nil
+end
+
 -- Every item of the list the character does not own yet, the best first.
 function BiS.Targets()
     local list = {}
@@ -424,7 +483,10 @@ end
 -- gear), else "BiS"; nil when it is not on it.
 function BiS.UpgradeText(itemID)
     local t = BiS.Target(itemID)
-    if not t then return nil end
+    if not t then
+        local pct = BiS.PotentialUpgradePercent(itemID)
+        return pct and string.format("+%.1f%%", pct) or nil
+    end
     if t.delta and LJ.SimBiS.Shows(t.delta, t.err) then return string.format("+%.1f DPS", t.delta) end
     if t.pct then return string.format("+%.1f%%", t.pct) end
     return L("BiS")
@@ -443,11 +505,17 @@ function BiS.Unusable(rec, spec)
     return spec.class == Player.class and Scoring.MissingSkill(rec.id) ~= nil
 end
 
-local function Forget() targets = nil end
+local function Forget()
+    targets = nil
+    wipe(potentialCache)
+    wipe(potentialDeltaCache)
+end
 for _, message in ipairs({ "DB_READY", "SIM_BIS_CHANGED", "EQUIPMENT_CHANGED", "SPEC_CHANGED", "PLAYER_CHANGED",
     "MODULES_CHANGED", "LIST_CHANGED" }) do
     LJ:Listen(message, Forget)
 end
 LJ:Listen("ITEMS_UPDATED", function()
+    wipe(potentialCache)
+    wipe(potentialDeltaCache)
     if wornUnknown then targets = nil end
 end)

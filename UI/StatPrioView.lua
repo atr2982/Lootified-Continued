@@ -164,7 +164,7 @@ function View.Create(parent, width)
     view.text:SetWidth(width)
     view.text:SetJustifyH("LEFT")
     view.text:SetWordWrap(true)
-    view.text:SetText(L("Drag a stat up or down: the higher, the more it counts. Your list and the Percent numbers follow at once; Sim does not use this order."))
+    view.text:SetText(L("Drag a stat up or down: the higher, the more it counts. Your list and the percent numbers follow at once."))
     view.list = CreateFrame("Frame", nil, view)
     view.list:SetWidth(width)
     view.rows, view.count = {}, 0

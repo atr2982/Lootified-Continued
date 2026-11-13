@@ -1,9 +1,9 @@
--- Lootified - the database look (UI/Database/): four pages to look things up - Items, Mobs, Quests and Places. Each
+-- Lootified - the database look (UI/Database/): pages to look things up - Items, Mobs and Places. Each
 -- page searches every record the addon knows: the search bar on top (with the number of results, a switch and the
 -- sort), the filters on the left, the results as a table in the middle (only the rows in view are built) and the picked
 -- record's details on the right. This kit makes a page from its definition and holds what the four share: the search
 -- bar, the filter widgets (chips, check boxes, a level range), the table rows, the detail panel parts, and the routes
--- from the other looks' addresses and between the pages (an item's mob, a mob's place, a place's quests).
+-- from the other looks' addresses and between the pages (an item's mob and a mob's place).
 local _, LJ = ...
 local L, F = LJ.L, LJ.F
 
@@ -21,7 +21,6 @@ local C = Theme.COLORS
 DB.TABS = {
     { key = "items", text = "Items", glyph = "package" },
     { key = "mobs", text = "Mobs", glyph = "skull" },
-    { key = "quests", text = "Quests", glyph = "scroll" },
     { key = "places", text = "Places", glyph = "castle" },
 }
 
@@ -108,7 +107,7 @@ function DB.Route(page, arg1, arg2)
         return "places", arg1 and DB.ZoneID(arg1)
     end
     if page == "home" or page == "journal" then return "places" end
-    return "items"    -- For you, Best in Slot, the wishlist
+    return "items"    -- For you and Best in Slot
 end
 
 -- The IDs of the records that are no plain numbers (items and quests are their item and quest IDs).
@@ -1048,5 +1047,14 @@ LJ:Listen("MAP_TARGET_CHANGED", function()
     for _, t in ipairs(DB.TABS) do
         local page = UI.pageSets.database[t.key]
         if page.root and page.root:IsVisible() then page:RefreshDetail() end
+    end
+end)
+
+-- Forever item records arrive asynchronously. Refresh visible database rows so newly
+-- available stats immediately produce their percentage comparison.
+LJ:Listen("ITEMS_UPDATED", function()
+    for _, t in ipairs(DB.TABS) do
+        local page = UI.pageSets.database[t.key]
+        if page.root and page.root:IsVisible() then page:Refresh() end
     end
 end)

@@ -33,7 +33,6 @@ local COLUMN = 276        -- the slot columns at the left and the right of the c
 local TEXT = COLUMN - ICON - 22   -- the most a slot's name takes beside its icon
 local GAP = 16            -- between a column and the character, between two weapons
 local VIEW_GAP = 6        -- between the view chips above the character
-local SET_LINE = 16       -- the line under the own sets' chips: what the set shown adds
 local ResolveDataSlot = BiS.ResolveDataSlot
 local PICK_ROWS = 8       -- the slot list's items shown at a time (the mouse wheel scrolls)
 
@@ -66,7 +65,7 @@ local function CreateSlot(parent, slot, right)
         SlotVisual(self)
         if self.itemID then
             local lines = {}
-            if self.wornBest then lines[1] = { L("Sim: what you wear is best"), C.okText[1], C.okText[2], C.okText[3] } end
+            if self.wornBest then lines[1] = { L("Percent: what you wear is best"), C.okText[1], C.okText[2], C.okText[3] } end
             lines[#lines + 1] = LJ.Tooltip.Hint("Click for alternatives")
             Widgets.ShowItemTooltip(self, self.itemID, lines)
         else
@@ -83,19 +82,6 @@ local function CreateSlot(parent, slot, right)
     end)
     SlotVisual(f)
     return f
-end
-
--- A view chip with the name the player gave a set, no wider than width: a longer name loses letters at its end (its
--- tooltip names it whole).
-local function FitChip(chip, name, width)
-    chip.name, chip.cut = name, false
-    chip:SetLabel(name, nil, true)
-    local text = name
-    while chip:GetWidth() > width and text ~= "" do
-        text = text:gsub("[%z\1-\127\194-\244][\128-\191]*$", "")
-        chip.cut = true
-        chip:SetLabel(text .. "...", nil, true)
-    end
 end
 
 -- The texts beside the icon, as wide as width: the name over the gain, or the name alone in the middle.
@@ -164,7 +150,7 @@ function UI.BiSSimButton(spec)
         return { text = "Up to date", glyph = "checkCircle",
             tip = "Your list was simmed with your level, talents and the gear you wear: no new sim needed. A click sims it again all the same." }
     end
-    return { text = "Best in Slot sim", glyph = rec and "warning" or "lightning",
+    return { text = "Best in Slot percent list", glyph = rec and "warning" or "lightning",
         tip = rec and "Your level, talents, gear or list changed since the last sim: sim again for a list that fits."
             or "Fights with your character as it is and tests every item you can wear in every slot (a few minutes). Your Best in Slot list, the upgrade marks and tooltips show what it finds." }
 end
@@ -194,12 +180,12 @@ function Page:RefreshSimButton(simSet)
     self.simSet = simSet
     local b = self.simButton
     if simSet then
-        b:SetLabel("Sim this set")
+        b:SetLabel("Rate this set")
         Widgets.SetTooltip(b, "Sim this set",
             "The set fights in the simulator's planner for its exact damage: the number on the sheet is an estimate from each item simmed alone.",
             "ANCHOR_BOTTOM")
     else
-        b:SetLabel("Open simulator")
+        b:SetLabel("Open percent list")
         Widgets.SetTooltip(b, "Open simulator", "Your character's damage, your own sets in the planner and the sets side by side.",
             "ANCHOR_BOTTOM")
     end
@@ -357,7 +343,7 @@ function Page:CreateWell(doll)
     end)
     self.model = model
 
-    -- the views (Page:LayoutViews): what is worn, the Best in Slot list, the own sets
+    -- the views (Page:LayoutViews): what is worn and the Best in Slot list
     local row = CreateFrame("Frame", nil, well)
     row:SetFrameLevel(model:GetFrameLevel() + 2)
     row:SetPoint("TOPLEFT", 8, -8)
@@ -366,7 +352,6 @@ function Page:CreateWell(doll)
     self.viewRow = row
     self.viewChips = {}
     local views = { "worn", "bis" }
-    for n in ipairs(LJ.cdb.plans) do views[#views + 1] = n end
     for _, view in ipairs(views) do
         local chip = Widgets.CreateChip(row, "", nil, 24)
         chip.view = view
@@ -387,10 +372,8 @@ function Page:CreateWell(doll)
     self.setGain = Widgets.Text(row, "smallSemi", C.text3)
 end
 
--- The view chips centered above the character: What I wear and Best in Slot with what the list's set adds between them
--- (gain: its text, nil without one), below them the own sets, empty ones too (their names cut to share the row) and,
--- while the sheet shows one, what it adds (setGain: its text). The character stands below them.
-function Page:LayoutViews(view, gain, setGain)
+-- The view chips centered above the character: What I wear and Best in Slot with the percent gain between them.
+function Page:LayoutViews(view, gain)
     local rows, line = 1, 0
     local width = self.well:GetWidth() - 16
     local worn, bis = self.viewChips[1], self.viewChips[2]
@@ -406,31 +389,8 @@ function Page:LayoutViews(view, gain, setGain)
     self.viewGain:SetPoint("LEFT", worn, "RIGHT", VIEW_GAP, 0)
     bis:ClearAllPoints()
     bis:SetPoint("LEFT", self.viewGain, "RIGHT", VIEW_GAP, 0)
-    local sets = {}
-    for i = 3, #self.viewChips do sets[#sets + 1] = self.viewChips[i] end
-    if #sets > 0 then
-        rows = 2
-        local total = -VIEW_GAP
-        for _, chip in ipairs(sets) do
-            FitChip(chip, UI.Sim.PlanName(chip.view), math.floor((width - (#sets - 1) * VIEW_GAP) / #sets))
-            total = total + chip:GetWidth() + VIEW_GAP
-        end
-        x = math.floor((width - total) / 2)
-        for _, chip in ipairs(sets) do
-            chip:ClearAllPoints()
-            chip:SetPoint("TOPLEFT", x, -(24 + VIEW_GAP))
-            x = x + chip:GetWidth() + VIEW_GAP
-        end
-    end
     for _, chip in ipairs(self.viewChips) do chip:SetActive(chip.view == view) end
-    self.setGain:SetShown(setGain ~= nil)
-    if setGain then
-        self.setGain:SetText(setGain)
-        self.setGain:ClearAllPoints()
-        self.setGain:SetPoint("TOP", 0, -(rows * (24 + VIEW_GAP)))
-        line = SET_LINE
-    end
-    self.model:SetPoint("TOPLEFT", 4, -(8 + rows * (24 + VIEW_GAP) + line + 4))
+    self.model:SetPoint("TOPLEFT", 4, -(8 + rows * (24 + VIEW_GAP) + 4))
 end
 
 -- A view chip: the sheet and the character show that gear (an empty own set: its empty slots, a click on one puts an
@@ -853,7 +813,7 @@ function Page:PickItem(slot, id)
         end
         if not n then
             UI.SimNotice:Show(L("Planner"),
-                L("Both your own sets have items already: pick one of them above the character to change it, or empty one in the simulator's planner."))
+                L("Both your own sets have items already: pick one of them above the character to change it, or empty one in the planner."))
             return
         end
         self.view = n
@@ -889,7 +849,7 @@ local function SimState(spec)
     local rec = LJ.SimBiS.Get(spec)
     if not rec then return "" end
     if LJ.SimBiS.IsOutdated(rec) then
-        return " · " .. Theme.GlyphString("warning", 12, C.warn) .. " " .. Theme.ColorText(L("Sim outdated"), C.warn)
+        return " · " .. Theme.GlyphString("warning", 12, C.warn) .. " " .. Theme.ColorText(L("Percent list outdated"), C.warn)
     end
     return " · " .. Theme.GlyphString("checkCircle", 12, C.ok) .. " "
         .. Theme.ColorText(F("Set %s DPS", string.format("%+.1f", rec.gain)), C.okText)
@@ -919,19 +879,17 @@ function Page:Refresh()
     -- slots, a click on one puts an item in it)
     self.ranking = BiS.Ranking(spec)
     local view = self.view
-    local emptySet = type(view) == "number" and next(LJ.cdb.plans[view]) == nil
     local function ListOf(slot) return BiS.ResolveSlot(spec, slot, self.ranking) end
     local function ItemOf(slot)
         if view == "bis" then return ListOf(slot) end
         if view == "worn" then return GetInventoryItemID("player", LJ.SimBiS.INV_SLOT[slot]) end
-        return LJ.cdb.plans[view][slot]
     end
 
     -- header
     local header = self.header
     header.title:SetText(Theme.Case(F("%s %s", L(spec.name), Util.ClassName(class))))
     header.sub:SetText(F("Level %d", level) .. " · " .. BiS.WeaponText(spec) .. SimState(spec))
-    self:RefreshSimButton(ranks and type(view) == "number" and not emptySet)
+    self:RefreshSimButton(false)
     self.bisButton:SetShown(ranks)
     if ranks then self:RefreshBiSButton(spec) end
     self:RefreshFilter(spec, ranks)
@@ -992,10 +950,8 @@ function Page:Refresh()
             gain = bestGain or ""
             if view == "worn" then
                 frame.why = L("Nothing worn")
-            elseif view ~= "bis" then
-                frame.why = L("Empty")
             elseif LJ.SimBiS.Simmed(spec, slot) then
-                frame.why = L("Sim: no item adds damage")
+                frame.why = L("No item adds a percent upgrade")
             else
                 frame.why = L("Nothing of your list fits this slot at your level: the filter at the top takes more armor or sources.")
             end
@@ -1005,30 +961,15 @@ function Page:Refresh()
         SlotVisual(frame)
     end
     self:LayoutSlots()
-    -- what the list's set adds (between What I wear and Best in Slot) and, on an own set, what that set adds: Percent
-    -- by the stat weights (exact), Sim by the sim (an own set: SimBiS.SetGain, an estimate unless it is the list or
-    -- what is worn; Sim this set fights it); an empty set says how it gets items
-    local listGain, setGain
-    if emptySet then
-        setGain = Theme.ColorText(L("Empty: click a slot to pick an item for this set."), C.text3)
-    end
+    -- the Best in Slot list's total gain compared with what is worn
+    local listGain
     if shares then
         local pct = LJ.ItemCheck.SetShare(spec, ListOf)
         listGain = pct and Pct(pct)
-        if type(view) == "number" and not emptySet then
-            pct = LJ.ItemCheck.SetShare(spec, ItemOf)
-            setGain = pct and InColor(F("%s by your stats", Pct(pct)), pct)
-        end
     elseif ranks then
         listGain = rec and not LJ.SimBiS.IsOutdated(rec) and F("%s DPS", string.format("%+.1f", rec.gain)) or nil
-        if type(view) == "number" and not emptySet then
-            local sum, exact = LJ.SimBiS.SetGain(spec, ItemOf)
-            local text = sum and string.format("%+.1f", sum)
-            setGain = sum and InColor(exact and F("%s DPS", text) or F("%s DPS (estimate)", text), sum)
-                or Theme.ColorText(L("Sim this set for its DPS"), C.text3)
-        end
     end
-    self:LayoutViews(view, listGain, setGain)
+    self:LayoutViews(view, listGain)
     self:DressModel()
 
     if self.flyout:IsShown() and self.flyout.owner then

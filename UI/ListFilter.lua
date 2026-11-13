@@ -251,7 +251,7 @@ function Filter.CreateButton(parent, onClick)
         GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
         GameTooltip:SetText(L("Filter"), 1, 1, 1)
         GameTooltip:AddLine(Filter.ListText(), 1, 1, 1, true)
-        GameTooltip:AddLine(L("Your spec, the armor and the sources your Best in Slot list, For you and the sims take. Click to change them."),
+        GameTooltip:AddLine(L("Your spec, the armor and the sources your Best in Slot list and For you take. Click to change them."),
             0.8, 0.8, 0.8, true)
         local spec = Player:GetActiveSpec()
         if spec and LJ.StatPrio.IsCustom(spec) then GameTooltip:AddLine(L("Your own stat priority counts."), 1, 0.82, 0, true) end
@@ -393,12 +393,12 @@ function Filter.CreatePanel(parent, onDone)
     panel.cardsTop = top + 18
     panel.cards = {}
     panel.box = Filter.CreateListBox(panel.filter, Filter.PANEL_WIDTH - PAD * 2,
-        "Picked at your first start. Percent and Sim both use it.")
+        "Picked at your first start. Percent scoring uses it.")
     panel.whole = Widgets.Text(panel.filter, "small", C.text3)
     panel.whole:SetWidth(Filter.PANEL_WIDTH - PAD * 2)
     panel.whole:SetJustifyH("LEFT")
     panel.whole:SetWordWrap(true)
-    panel.whole:SetText(L("Counts for the whole addon: Best in Slot, For you and the simulator."))
+    panel.whole:SetText(L("Counts for the whole addon: Best in Slot and For you."))
     panel.reset = Widgets.CreateButton(panel.filter, "Back to realistic", "ghost", "reset", nil, PANEL_BUTTON_HEIGHT)
     panel.reset:SetScript("OnClick", function()
         Util.PlaySound("U_CHAT_SCROLL_BUTTON")
@@ -441,15 +441,15 @@ local function TourSteps(panel)
         local armor = #Filter.ClassArmor() > 1
         steps[#steps + 1] = { key = "filter", title = armor and "Armor and sources" or "Sources",
             text = armor
-                and "What your list may use: the armor kinds (cloaks always count) and where its items may come from. The drop chance leaves out rarer drops (10 % at the start). Every change counts at once, for the sims too; Back to realistic gives back the list of your first start."
-                or "What your list may use: where its items may come from. The drop chance leaves out rarer drops (10 % at the start). Every change counts at once, for the sims too; Back to realistic gives back the list of your first start.",
+                and "What your list may use: the armor kinds (cloaks always count) and where its items may come from. The drop chance leaves out rarer drops (10 % at the start). Every change counts at once; Back to realistic gives back the list of your first start."
+                or "What your list may use: where its items may come from. The drop chance leaves out rarer drops (10 % at the start). Every change counts at once; Back to realistic gives back the list of your first start.",
             enter = Tab("filter"),
             target = function() return panel.box, panel.reset end }
     end
     local spec = Player:GetActiveSpec()
     if not seen.stats and spec and LJ.StatPrio.Counts(spec) then
         steps[#steps + 1] = { key = "stats", title = "Stat priority",
-            text = "Your spec's stats, the one that counts most on top. Drag a stat up or down: your list and the Percent numbers follow at once; Default order gives back your spec's own order. Only with Percent: Sim rates your items by DPS.",
+            text = "Your spec's stats, the one that counts most on top. Drag a stat up or down: your list and the percent numbers follow at once; Default order gives back your spec's own order.",
             enter = Tab("stats"),
             target = function() return panel.tabs.stats, panel.stats end }
     end

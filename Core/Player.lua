@@ -262,10 +262,15 @@ local WEAPONS = {
     HUNTER  = Set(0, 1, 2, 3, 6, 7, 8, 10, 13, 15, 16, 18),
     ROGUE   = Set(2, 3, 4, 7, 13, 15, 16, 18),
     PRIEST  = Set(4, 10, 15, 19),
-    SHAMAN  = Set(0, 1, 4, 5, 10, 13, 15),
+    -- Forever's current trainer data does not grant Shamans two-handed axes or
+    -- two-handed maces; those entries must not be treated as class-usable.
+    SHAMAN  = Set(0, 4, 10, 13, 15),
     MAGE    = Set(7, 10, 15, 19),
     WARLOCK = Set(7, 10, 15, 19),
-    DRUID   = Set(4, 5, 10, 13, 15),
+    -- Forever lets Druids train polearms as well as maces, staves, daggers and fists.
+    -- Weapon skill is training state, not class eligibility, so it is intentionally
+    -- not checked here.
+    DRUID   = Set(4, 5, 6, 10, 13, 15),
 }
 
 -- The level a class learns Dual Wield at its trainer (CMaNGOS classic-db npc_trainer_template: the warrior, hunter and

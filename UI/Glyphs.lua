@@ -54,6 +54,7 @@ LJ.Glyphs = {
         hourglass = 46,
         lightning = 47,
         castle = 48,
+        home = 48,
         xCircle = 49,
         reset = 50,
         globe = 51,

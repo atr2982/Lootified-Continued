@@ -253,7 +253,6 @@ LJ.defaults = {
                                                                                           -- (Core/Modules.lua)
     scale = 1.0,
     position = nil,
-    tooltipQuests = true,
     lootFilter = { spec = "ALL" },   -- the Loot tab's filter (Lists.PassesClass)
     journal = { filter = "ALL", tab = "loot", last = {}, questFilter = "MINE" },
     world = { upgradesOnly = false, zones = "NEAR" },   -- Open World page: "Upgrades only"; zone list: "NEAR" (for my
@@ -340,6 +339,8 @@ LJ:On("ADDON_LOADED", function(_, name)
     if name ~= ADDON_NAME then return end
     LootifiedData = CopyDefaults(LJ.defaults, LootifiedData)
     LootifiedCharData = CopyDefaults(LJ.charDefaults, LootifiedCharData)
+    -- Quest source lines were removed from item tooltips; clear the retired saved option too.
+    LootifiedData.tooltipQuests = nil
     -- as many own sets as the defaults have (1.9.20 took Set 3 out): one saved beyond them goes
     local plans = #LJ.charDefaults.plans
     for n = plans + 1, #LootifiedCharData.plans do
@@ -427,7 +428,6 @@ local HELP = {
     "|cffffd200/lf start|r - the start page",
     "|cffffd200/lf settings|r - the settings: modules, look, tooltips, language",
     "|cffffd200/lf bis|r - Best in Slot for your character",
-    "|cffffd200/lf wishlist|r - your wishlist",
     "|cffffd200/lf raids|r - raid overview",
     "|cffffd200/lf search <text>|r - search every boss and item",
     "|cffffd200/lf <dungeon>|r - open a dungeon directly (dm, wc, sfk, bfd, hot, rol, brd, strat ...)",
@@ -466,8 +466,6 @@ function LJ:HandleSlash(msg)
         self:Print("Percent scoring is enabled in Lootified.")
     elseif cmd == "export" then
         self:Print("Character export is disabled in Lootified.")
-    elseif cmd == "wishlist" or cmd == "wish" or cmd == "wl" then
-        self:Open("wishlist")
     elseif cmd == "raids" or cmd == "raid" then
         self:Open("home", "raid")
     elseif cmd == "dungeons" or cmd == "dungeon" or cmd == "home" then

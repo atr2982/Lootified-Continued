@@ -203,9 +203,9 @@ function Page:SimCard(spec)
     local SimBiS = LJ.SimBiS
     local run = SimBiS.running
     if SimBiS.Get(spec) or (run and run.spec.key == spec.key) then return false end
-    self.upgrades:Add("empty", { title = L("Best in Slot sim"), glyph = "lightning",
-        text = L("Your Best in Slot list is only an estimate so far. The sim tests every item you can wear on your character (a few minutes), then your next upgrades show here."),
-        button = "Run Best in Slot sim", buttonGlyph = "lightning", primary = true,
+        self.upgrades:Add("empty", { title = L("Best in Slot percent list"), glyph = "chartUp",
+        text = L("Your Best in Slot list is calculated from your spec's stat weights, then your next upgrades show here."),
+        button = "Refresh Best in Slot", buttonGlyph = "refresh", primary = true,
         onClick = function()
             Util.PlaySound("IG_MAINMENU_OPTION")
             UI.SimSpeed:Then(function() SimBiS.Start(spec) end)
@@ -229,11 +229,11 @@ function Page:SimSection(d, spec)
     local mine = run and run.spec.key == spec.key
     local rec = SimBiS.Get(spec)
     if mine then
-        Count(F(L("Sim %d%%"), math.floor(run.progress * 100)))
+        Count(F(L("Percent %d%%"), math.floor(run.progress * 100)))
     elseif SimBiS.IsOutdated(rec) then
-        Count(L("sim outdated"))
+        Count(L("percent list outdated"))
     else
-        Count(F(L("sim: +%.1f DPS"), rec.gain))
+        Count(F(L("percent: +%.1f%%"), rec.gain))
     end
     local s = UI.BiSSimButton(spec)
     local sim = { text = s.text, glyph = s.glyph, onClick = function() UI.PressBiSSim(spec) end,
@@ -254,7 +254,7 @@ function Page:RefreshUpgrades()
     sheet:Reset(UI:ContentWidth() - LEFT_WIDTH - GAP - 32)
     if not LJ.Modules.On("bis") then
         sheet:Add("empty", { title = L("Best in Slot is off"),
-            text = L("Switch it on for your Best in Slot set, the next upgrades, the simulator and the upgrade check for loot. The settings have it too (Modules)."),
+            text = L("Switch it on for your Best in Slot set, the next upgrades and the percent upgrade check for loot. The settings have it too (Modules)."),
             glyph = "crown", button = "Switch on Best in Slot", buttonGlyph = "crown", onClick = function()
                 Util.PlaySound("IG_MAINMENU_OPTION")
                 LJ.Modules.Set("bis", true)
@@ -263,7 +263,7 @@ function Page:RefreshUpgrades()
         return
     end
     -- (the Best in Slot sim builds the lists of Sim)
-    local simmed = spec and UI.Sim.RanksItems(spec)
+    local simmed = false
     if simmed and self:SimCard(spec) then
         self:SimProblem()
         sheet:Finish(4)

@@ -159,12 +159,6 @@ local SIMULATOR = {
     target = function() return UI.pages.bis.bisButton, UI.pages.bis.simButton end,
     pad = 6,
 }
-local WISHLIST = {
-    title = "Wishlist",
-    text = "The items you starred, grouped by where they drop. You get an alert as soon as one drops.",
-    enter = function() UI:Open("wishlist") end,
-    target = Content, place = "inside", pad = 0,
-}
 local SEARCH = {
     title = "Search",
     text = "Search any item, boss, rare or quest here. The results show as you type.",
@@ -243,20 +237,14 @@ local DB_TABLE = {
 }
 local DB_DETAIL = {
     title = "Details",
-    -- the wishlist button only with its module (else Try on is the main button)
-    text = function()
-        if LJ.Modules.On("wishlist") then
-            return L("The picked item: its stats, where it drops (click a mob or a quest to open it) and the wishlist button. You get an alert when a wishlist item drops.")
-        end
-        return L("The picked item: its stats and where it drops (click a mob or a quest to open it).")
-    end,
+    text = L("The picked item: its stats and where it drops (click a mob or a quest to open it)."),
     enter = function() UI:Open("items") end,
     target = function() return ItemsPage().detail end,
     interactive = true,
 }
 local DB_TABS = {
-    title = "Mobs, Quests and Places",
-    text = "The same for bosses and rares, for quests (with their chains) and for dungeons, raids and zones. Links between the pages open the right entry.",
+    title = "Mobs and Places",
+    text = "The same for bosses, rares, dungeons, raids and zones. Links between the pages open the right entry.",
     enter = function() UI:Open("items") end,
     target = function() return UI.frame.nav end,
     interactive = true,
@@ -276,10 +264,10 @@ local SETTINGS_STEPS = {
       enter = function() UI.Settings:Open("general", true) end,
       target = function() return SettingsWindow().side end },
     SettingsStep("modules", "Modules",
-        "Switch off the pages you do not use. Best in Slot and Wishlist also take their marks, tooltip lines and alerts with them. One module always stays on."),
+        "Switch off the pages you do not use. Best in Slot also takes its marks, tooltip lines and upgrade check with it. One module always stays on."),
     SettingsStep("look", "Look & color", "Modern, Classic or Database, and the layout color: automatic, your class color or one you pick."),
     SettingsStep("tooltips", "Tooltips", "The lines Lootified adds to item tooltips, one switch each. The preview shows a real tooltip as you set it."),
-    SettingsStep("map", "Map & alerts", "The dungeon entrances on the world map, the alert when a wishlist item drops and opening the dungeon you are in."),
+    SettingsStep("map", "Map & alerts", "The dungeon entrances on the world map and opening the dungeon you are in."),
     SettingsStep("help", "Language, tour and help",
         "The language is under Language; this tour starts again from Tour & help or with /lf tour. The Lootified GitHub project is linked here and behind the ? at the top. Have fun!"),
 }
@@ -301,9 +289,8 @@ local function BuildSteps()
             Add(BIS)
             Add(FILTER)
             -- Sim: the sheet's Best in Slot sim and simulator buttons (in Percent the sheet has no Best in Slot sim)
-            if UI.Sim.RanksItems(Player:GetActiveSpec()) then Add(SIMULATOR) end
+            if not LJ.NO_SIM and UI.Sim.RanksItems(Player:GetActiveSpec()) then Add(SIMULATOR) end
         end
-        if On("wishlist") then Add(WISHLIST) end
         Add(SEARCH)
     end
     for _, step in ipairs(SETTINGS_STEPS) do Add(step) end

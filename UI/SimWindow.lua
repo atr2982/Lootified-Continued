@@ -104,7 +104,7 @@ end
 -- player's class: tanks and healers by their damage). The sim Best in Slot builds their list, the boxes and tooltips
 -- show DPS; else (Percent) every spec keeps the list of its stat weights with the share in percent.
 function SimUI.RanksItems(spec)
-    return SimUI.Supports(spec) and LJ.cdb.rating == "sim"
+    return not LJ.NO_SIM and SimUI.Supports(spec) and LJ.cdb.rating == "sim"
 end
 
 ---------------------------------------------------------------------------
