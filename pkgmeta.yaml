@@ -1,2 +1,10 @@
 package-as: LootifiedContinued
 
+ignore:
+  - .github
+  - .gitignore
+  - refresh-tool
+  - README.md
+  - pkgmeta.yaml
+  - THIRD_PARTY_NOTICES.md
+

@@ -19,7 +19,8 @@ jobs:
         shell: bash
         run: |
           mkdir -p staging/LootifiedContinued
-          cp -R LootifiedContinued/. staging/LootifiedContinued/
+          cp -R Core Data Media Sim UI staging/LootifiedContinued/
+          cp Bindings.xml LootifiedContinued.toc icon.png staging/LootifiedContinued/
           cd staging
           zip -r ../LootifiedContinued.zip LootifiedContinued
 
