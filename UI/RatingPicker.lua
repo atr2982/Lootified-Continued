@@ -258,7 +258,7 @@ end
 -- and an item's fights (their numbers do not count there); what shows the sim's numbers follows (SIM_BIS_CHANGED: the
 -- sheet, the marks, For you, the loot boxes, the tour, the simulator).
 function Picker:Set(key)
-    assert(key == "percent", "Lootified Continued only supports percent scoring")
+    assert(key == "percent", "Lootified only supports percent scoring")
     LJ.cdb.rating = "percent"
     if key == "percent" then
         LJ.SimBiS.Cancel()

@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const root = "https://wowforeverforge.com";
-const headers = { "User-Agent": "Lootified-Continued-refresh/1.0" };
+const headers = { "User-Agent": "Lootified-refresh/1.0" };
 async function page(url) { const r = await fetch(root + url, { headers }); if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`); return r.text(); }
 function luaKey(k) { return /^[A-Za-z_][A-Za-z0-9_]*$/.test(String(k)) ? String(k) : `[${JSON.stringify(String(k))}]`; }
 function lua(v, depth = 0) {

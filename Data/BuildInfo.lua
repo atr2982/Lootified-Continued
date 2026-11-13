@@ -1,4 +1,4 @@
--- Lootified Continued data manifest. Update this when the generated data files are refreshed.
+-- Lootified data manifest. Update this when the generated data files are refreshed.
 local _, LJ = ...
 LJ.DATA_BUILD = "1.60.1.70790"
 LJ.DATA_CHECKED = "2026-11-05"

@@ -555,7 +555,7 @@ local function CreateFoot(frame)
     -- as the version, white under the mouse
     links.text = Widgets.Text(links, "label", C.text4)
     links.text:SetPoint("RIGHT")
-    links.text:SetText(Util.Upper("Lootified Continued on GitHub"))
+    links.text:SetText(Util.Upper("Lootified on GitHub"))
     links:SetWidth(math.ceil(Widgets.TextWidth(links.text)))
     links:SetScript("OnEnter", function(b) Widgets.SetTextColor(b.text, C.white) end)
     links:SetScript("OnLeave", function(b) Widgets.SetTextColor(b.text, C.text4) end)

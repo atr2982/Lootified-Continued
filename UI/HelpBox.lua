@@ -15,7 +15,7 @@ local Help = {}
 UI.HelpBox = Help
 
 Help.LINKS = {
-    { label = "Project on GitHub", url = "https://github.com/atr2982/Lootified-Continued" },
+    { label = "Project on GitHub", url = "https://github.com/atr2982/LootifiedContinued" },
     { label = "Data from ForeverDB.net", url = "https://foreverdb.net" },
 }
 
@@ -69,7 +69,7 @@ local function Create()
     f.text:SetPoint("TOPLEFT", PAD, -PAD - 34)
     f.text:SetWidth(WIDTH - PAD * 2)
     f.text:SetWordWrap(true)
-    f.text:SetText("Found a bug or have an idea? Visit the Lootified Continued project on GitHub.")
+    f.text:SetText("Found a bug or have an idea? Visit the Lootified project on GitHub.")
     local height = PAD + 34 + f.text:GetStringHeight()
     local above = f.text
     f.lines = {}

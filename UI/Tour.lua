@@ -281,7 +281,7 @@ local SETTINGS_STEPS = {
     SettingsStep("tooltips", "Tooltips", "The lines Lootified adds to item tooltips, one switch each. The preview shows a real tooltip as you set it."),
     SettingsStep("map", "Map & alerts", "The dungeon entrances on the world map, the alert when a wishlist item drops and opening the dungeon you are in."),
     SettingsStep("help", "Language, tour and help",
-        "The language is under Language; this tour starts again from Tour & help or with /lf tour. The Lootified Continued GitHub project is linked here and behind the ? at the top. Have fun!"),
+        "The language is under Language; this tour starts again from Tour & help or with /lf tour. The Lootified GitHub project is linked here and behind the ? at the top. Have fun!"),
 }
 
 -- The steps for the look and the modules that are on.

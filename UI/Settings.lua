@@ -431,7 +431,7 @@ local function BuildHelp(page)
     end } })[1]
     -- bugs and ideas: the homepage and Discord to copy (UI/HelpBox.lua)
     page:Label("Bugs & ideas")
-    page:Text("Found a bug or have an idea? Visit the Lootified Continued GitHub project.", "bodySmall", C.text2)
+    page:Text("Found a bug or have an idea? Visit the Lootified GitHub project.", "bodySmall", C.text2)
     page.links = page:Buttons({ { text = "Project on GitHub", glyph = "link", onClick = function() UI.HelpBox:Show() end } })[1]
     page:Label("Chat commands")
     page:Text(L("/lf opens and closes the window, /lf settings opens these settings, /lf tour starts the tour. /lf help lists every command."),

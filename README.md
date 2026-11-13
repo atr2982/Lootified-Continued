@@ -1,6 +1,6 @@
-# Lootified Continued
+# Lootified
 
-Lootified Continued is an English-only, lightweight loot and progression journal for WoW: Forever. It brings dungeon quests, quest chains, boss loot, open-world drops, and level-aware gear upgrades together so you can see what is worth doing next without juggling several database addons.
+Lootified is an English-only, lightweight loot and progression journal for WoW: Forever. It brings dungeon quests, quest chains, boss loot, open-world drops, and level-aware gear upgrades together so you can see what is worth doing next without juggling several database addons.
 
 ## What it does
 
@@ -14,7 +14,7 @@ Lootified Continued is an English-only, lightweight loot and progression journal
 
 ## Designed to stay lightweight
 
-Lootified Continued focuses on lookup, planning, and upgrade comparison. It uses English text, avoids language packs and dungeon-map assets, and keeps the main journal, Open World, and Best in Slot pages focused on the information you need while leveling.
+Lootified focuses on lookup, planning, and upgrade comparison. It uses English text, avoids language packs and dungeon-map assets, and keeps the main journal, Open World, and Best in Slot pages focused on the information you need while leveling.
 
 ## Maintained data
 

@@ -2,7 +2,7 @@
 local ADDON_NAME, LJ = ...
 
 LJ.ADDON_NAME = ADDON_NAME
-LJ.TITLE = "Lootified Continued"
+LJ.TITLE = "Lootified"
 LJ.VERSION = C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version")   -- the toc's version
 -- Forever Lite intentionally uses the lightweight stat-priority scorer. The embedded combat
 -- simulator remains in the source backup for now, but is never selected or started.
@@ -463,9 +463,9 @@ function LJ:HandleSlash(msg)
     elseif cmd == "bis" then
         self:Open("bis")
     elseif cmd == "sim" then
-        self:Print("Percent scoring is enabled in Lootified Continued.")
+        self:Print("Percent scoring is enabled in Lootified.")
     elseif cmd == "export" then
-        self:Print("Character export is disabled in Lootified Continued.")
+        self:Print("Character export is disabled in Lootified.")
     elseif cmd == "wishlist" or cmd == "wish" or cmd == "wl" then
         self:Open("wishlist")
     elseif cmd == "raids" or cmd == "raid" then
