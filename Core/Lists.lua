@@ -174,7 +174,9 @@ end
 function Lists.NextUpgrades()
     local spec = Player:GetActiveSpec()
     if not spec then return {} end
-    local simmed = LJ.SimBiS.Get(spec) ~= nil
+    -- Saved simulator records are legacy data and must not drive the active
+    -- percent-only upgrade list or bypass the current Best in Slot filters.
+    local simmed = false
     local ranking = not simmed and BiS.Ranking(spec)
     local list, seen = {}, {}
     local mainHand

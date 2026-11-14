@@ -1,5 +1,7 @@
 package-as: LootifiedContinued
 
+manual-changelog: CHANGELOG.md
+
 ignore:
   - .github
   - .gitignore

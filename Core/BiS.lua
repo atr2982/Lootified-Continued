@@ -171,17 +171,9 @@ local SECOND_OF = { FINGER1 = "FINGER2", TRINKET1 = "TRINKET2" }
 -- damage gets the item with the best other stats. Nothing in the off hand beside a two-hander in the main hand.
 function BiS.ResolveSlot(spec, slot, ranking)
     if slot == "OFFHAND" and BiS.IsTwoHand(BiS.ResolveSlot(spec, "MAINHAND", ranking)) then return nil end
-    local id = LJ.SimBiS.Winner(spec, slot)
-    if id then return id end
     local taken
     if FIRST_OF[slot] then
         taken = BiS.ResolveSlot(spec, FIRST_OF[slot], ranking)
-    elseif SECOND_OF[slot] then
-        taken = LJ.SimBiS.Winner(spec, SECOND_OF[slot])
-    end
-    if LJ.SimBiS.Get(spec) then
-        local worn = GetInventoryItemID("player", LJ.SimBiS.INV_SLOT[slot])
-        if worn and worn ~= taken then return worn end
     end
     local _, _, _, list = BiS.RankedPick(spec, slot, ranking)
     for _, x in ipairs(list or {}) do
@@ -338,18 +330,9 @@ end
 local function MakeTargets(spec)
     local list = {}
     wornUnknown = false
-    local rec = LJ.SimBiS.Get(spec)
-    if rec then
-        for slot, r in pairs(rec.slots) do
-            for _, row in ipairs(r.rows) do
-                if not row.failed and LJ.SimBiS.Shows(row.delta, row.err) then
-                    AddTarget(list, row.id, slot, row.delta, row.delta, row.err)
-                end
-            end
-        end
-    else
-        AddRanked(list, spec)
-    end
+    -- Percent is the only active scoring mode. Never let stale saved simulator
+    -- rows bypass the current armor/source filter.
+    AddRanked(list, spec)
     return list
 end
 
@@ -369,15 +352,23 @@ end
 function BiS.Target(itemID)
     local list = Current()
     local t = list and list[itemID]
-    if t and Items.IsOwned(itemID) then return nil end
+    if t then
+        local spec = Player:GetActiveSpec()
+        -- A saved legacy target can outlive the current Percent list. Re-check the
+        -- live Forever armor/source/class rules before any page calls it an upgrade.
+        if Items.IsOwned(itemID) or not spec or not BiS.OnSheet(spec, itemID, BiS.ListLevel(spec)) then
+            return nil
+        end
+    end
     return t
 end
 
--- The sort value of an item on the list (bigger: better). If it is not an eligible
--- current-level target, return the same stat-weight gain as a future-item preview.
+-- The sort value of an item on the active Percent target list (bigger: better).
+-- Preview scoring for the Database page is deliberately separate; do not let a
+-- future-item preview make a filtered-out Journal drop look like an upgrade.
 function BiS.Upgrade(itemID)
     local t = BiS.Target(itemID)
-    return (t and t.value) or BiS.PotentialUpgrade(itemID)
+    return t and t.value
 end
 
 -- Open-world rows need a live answer even when the cached target sheet was built before
@@ -483,11 +474,8 @@ end
 -- gear), else "BiS"; nil when it is not on it.
 function BiS.UpgradeText(itemID)
     local t = BiS.Target(itemID)
-    if not t then
-        local pct = BiS.PotentialUpgradePercent(itemID)
-        return pct and string.format("+%.1f%%", pct) or nil
-    end
-    if t.delta and LJ.SimBiS.Shows(t.delta, t.err) then return string.format("+%.1f DPS", t.delta) end
+    if not t then return nil end
+    if not LJ.NO_SIM and t.delta and LJ.SimBiS.Shows(t.delta, t.err) then return string.format("+%.1f DPS", t.delta) end
     if t.pct then return string.format("+%.1f%%", t.pct) end
     return L("BiS")
 end

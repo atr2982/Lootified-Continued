@@ -846,6 +846,7 @@ end
 
 -- The end of the header's sub line: what the sim found for the spec (the gain of its set), or that it is outdated.
 local function SimState(spec)
+    if LJ.NO_SIM then return "" end
     local rec = LJ.SimBiS.Get(spec)
     if not rec then return "" end
     if LJ.SimBiS.IsOutdated(rec) then
@@ -897,7 +898,7 @@ function Page:Refresh()
     -- no off hand beside a two-hander
     local twoHand = BiS.IsTwoHand(ItemOf("MAINHAND"))
     self.slots.OFFHAND:SetShown(not twoHand)
-    local rec = LJ.SimBiS.Get(spec)
+    local rec = not LJ.NO_SIM and LJ.SimBiS.Get(spec) or nil
     for _, slot in ipairs(BiS.SLOTS) do
         local frame = self.slots[slot]
         local itemID = frame:IsShown() and ItemOf(slot) or nil
